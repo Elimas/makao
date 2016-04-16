@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2016-04-11T22:06:11
+# Project created by QtCreator 2016-04-16T20:41:13
 #
 #-------------------------------------------------
 
@@ -12,9 +12,9 @@ TARGET = makao
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES += src/main.cpp\
+        src/mainwindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += src/mainwindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += src/mainwindow.ui
