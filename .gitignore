@@ -37,3 +37,16 @@ Makefile*
 CMakeLists.txt.user
 
 build
+
+# Visual Studio
+*.pdb
+*.obj
+*.lastbuildstate
+*.tlog
+*.log
+*.vcxproj
+*.vcxproj.user
+*.filters
+*.suo
+*.exe
+*.ilk

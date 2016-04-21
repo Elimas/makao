@@ -26,7 +26,9 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background:url(:/tlo/menu/Grafiki/background_1.png)</string>
+   <string notr="true">#centralWidget {
+background:url(:/tlo/menu/Grafiki/background_1.png)
+}</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QGraphicsView" name="graphicsView">
@@ -46,6 +48,29 @@
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
+    </property>
+   </widget>
+   <widget class="CardsWidget" name="cardsWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>230</y>
+      <width>481</width>
+      <height>211</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="addCardButton">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>230</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dodaj kartę</string>
     </property>
    </widget>
   </widget>
@@ -70,6 +95,14 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>CardsWidget</class>
+   <extends>QWidget</extends>
+   <header>cardswidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
