@@ -4,5 +4,7 @@
         <file>Grafiki/name.png</file>
         <file>Grafiki/Haslo.png</file>
         <file>Grafiki/NazwaGry.png</file>
+        <file>Grafiki/ip.png</file>
+        <file>Grafiki/nick.png</file>
     </qresource>
 </RCC>

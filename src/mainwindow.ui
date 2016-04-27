@@ -67,17 +67,26 @@ QPushButton:hover
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>170</y>
+      <x>260</x>
+      <y>160</y>
       <width>222</width>
-      <height>362</height>
+      <height>343</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="vclMenug">
+    <layout class="QVBoxLayout" name="layMenu">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
      <item>
       <widget class="QPushButton" name="btnDolacz">
        <property name="cursor">
         <cursorShape>CrossCursor</cursorShape>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
        </property>
        <property name="styleSheet">
         <string notr="true"/>
@@ -115,91 +124,56 @@ QPushButton:hover
      </item>
     </layout>
    </widget>
-   <widget class="QTextBrowser" name="txtHaslo">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>410</y>
-      <width>221</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QTextBrowser" name="txtNazwaGry">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>270</y>
-      <width>221</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="rbtnHaslo">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>460</y>
-      <width>82</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Bez hasła</string>
-    </property>
-   </widget>
-   <widget class="QGraphicsView" name="gphNazwaGry">
+   <widget class="QGraphicsView" name="gphNick">
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>240</y>
+      <y>150</y>
       <width>201</width>
       <height>81</height>
      </rect>
     </property>
-    <property name="layoutDirection">
-     <enum>Qt::LeftToRight</enum>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
     <property name="styleSheet">
-     <string notr="true">background-image: url(:/tlo/menu/Grafiki/NazwaGry.png);</string>
+     <string notr="true">background:url(:/tlo/menu/Grafiki/nick.png)</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="gphHaslo">
+   <widget class="QGraphicsView" name="gphIP">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>350</y>
-      <width>151</width>
-      <height>81</height>
+      <y>300</y>
+      <width>171</width>
+      <height>91</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-image: url(:/tlo/menu/Grafiki/Haslo.png);</string>
+     <string notr="true">background-image: url(:/tlo/menu/Grafiki/ip.png);</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
     </property>
    </widget>
-   <widget class="QFrame" name="frame">
+   <widget class="QLineEdit" name="txtNick">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>130</y>
-      <width>171</width>
-      <height>111</height>
+      <x>52</x>
+      <y>260</y>
+      <width>181</width>
+      <height>31</height>
      </rect>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+   </widget>
+   <widget class="QLineEdit" name="txtIP">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>410</y>
+      <width>181</width>
+      <height>31</height>
+     </rect>
     </property>
    </widget>
   </widget>
