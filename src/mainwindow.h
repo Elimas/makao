@@ -15,8 +15,20 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+
+
+
+
+
+
+
+
 private slots:
-    void on_addCardButton_clicked();
+    void on_btnWyjscie_clicked();
+
+    void on_btnDolacz_clicked();
+
+    void on_btnStworz_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -2,5 +2,7 @@
     <qresource prefix="/tlo/menu">
         <file>Grafiki/background_1.png</file>
         <file>Grafiki/name.png</file>
+        <file>Grafiki/Haslo.png</file>
+        <file>Grafiki/NazwaGry.png</file>
     </qresource>
 </RCC>

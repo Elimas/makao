@@ -1,13 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "cardswidget.h"
-#include "card.h"
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->gphNazwaGry->setVisible(false);
+    ui->gphHaslo->setVisible(false);
+    ui->txtNazwaGry->setVisible(false);
+    ui->txtHaslo->setVisible(false);
+    ui->rbtnHaslo->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -15,8 +19,35 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_addCardButton_clicked()
+
+
+
+
+
+void MainWindow::on_btnWyjscie_clicked()
 {
-	Card card(Card::Suit::Club, Card::Pip::Ace);
-	ui->cardsWidget->addCard(card);
+    if(ui->btnWyjscie->text()=="Powrót")
+    {
+        ui->btnDolacz->setVisible(true);
+        ui->btnStworz->setVisible(true);
+        ui->btnWyjscie->setText("Wyjście");
+    }
+    else
+    {
+      QApplication::exit();
+    }
+}
+
+void MainWindow::on_btnDolacz_clicked()
+{
+    ui->btnDolacz->setVisible(false);
+    ui->btnStworz->setVisible(false);
+    ui->btnWyjscie->setText("Powrót");
+}
+
+void MainWindow::on_btnStworz_clicked()
+{
+    ui->btnDolacz->setVisible(false);
+    ui->btnStworz->setVisible(false);
+    ui->btnWyjscie->setText("Powrót");
 }
