@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -19,7 +19,8 @@ SOURCES += src/main.cpp\
     src/card.cpp \
     src/client.cpp \
     src/player.cpp \
-    src/server.cpp
+    src/server.cpp \
+    src/lobbywidget.cpp
 
 HEADERS  += src/mainwindow.h \
     src/cardswidget.h \
@@ -28,11 +29,13 @@ HEADERS  += src/mainwindow.h \
     src/client.h \
     src/messagetype.h \
     src/player.h \
-    src/server.h
+    src/server.h \
+    src/lobbywidget.h
 
 FORMS    += src/mainwindow.ui \
     src/cardswidget.ui \
-    src/singlecardwidget.ui
+    src/singlecardwidget.ui \
+    src/lobbywidget.ui
 
 RESOURCES += \
     tlomenu.qrc

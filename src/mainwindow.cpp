@@ -4,7 +4,7 @@
 
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+    QMainWindow(parent), player(NULL), server(NULL), client(NULL), lobbyWidget(NULL),
 
     ui(new Ui::MainWindow)
 {
@@ -17,13 +17,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete lobbyWidget;
+    /*delete player;
+    delete server;
+    delete client;*/
     delete ui;
 }
-
-
-
-
-
 
 void MainWindow::on_btnWyjscie_clicked()
 {
@@ -63,4 +62,36 @@ void MainWindow::on_btnStworz_clicked()
     ui->txtNick->setVisible(true);
     ui->gphNick->setVisible(true);
 
+}
+
+void MainWindow::hostGame(QString playerName, int port)
+{
+    //if (player != NULL) delete player;
+    //if (server != NULL) delete server;
+    player = new Player(this, playerName);
+    server = new Server(this, player);
+    lobbyWidget = LobbyWidget::createServerLobby(this, server, port);
+    lobbyWidget->show();
+    lobbyWidget->startServer();
+}
+
+void MainWindow::joinGame(QString playerName, QString ip, int port)
+{
+    //if (player != NULL) delete player;
+    //if (server != NULL) delete server;
+    player = new Player(this, playerName);
+    client = new Client(this, player);
+    lobbyWidget = LobbyWidget::createClientLobby(this, client, ip, port);
+    lobbyWidget->show();
+    lobbyWidget->startClient();
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    hostGame("hostPlayer", port);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    joinGame("clientPlayer", "127.0.0.1", port);
 }

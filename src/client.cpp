@@ -14,6 +14,7 @@ Client::Client(QObject *parent, Player *player) :
 Client::~Client()
 {
     disconnectFromHost();
+    if (player != NULL) delete player;
 }
 
 void Client::connectToHost(QString ip, quint16 port)
@@ -64,9 +65,55 @@ void Client::readData()
 
         qDebug() << "New message from server";
         qDebug() << "Type: " << messageType << " Message: " << message;
-        if (messageType == MessageType::WelcomeClient)
+        if (messageType == MessageType::WelcomeClientSetId)
         {
+            player->setId(message.toInt());
             sendMessage(MessageType::SetName, player->name);
+        }
+        else if (messageType == MessageType::PlayerConnected)
+        {
+            QStringList args = message.split(";");
+            if (args.length() == 2)
+            {
+                int id = args.value(0).toInt();
+                QString name = args.value(1);
+                Player *newPlayer = new Player(this, name);
+                newPlayer->id = id;
+                otherPlayers.append(newPlayer);
+                qDebug() << "New player connected #" << newPlayer->id << " " << newPlayer->name;
+            }
+        }
+        else if (messageType == MessageType::PlayerSetNewName)
+        {
+            QStringList args = message.split(";");
+            if (args.length() == 2)
+            {
+                int id = args.value(0).toInt();
+                QString name = args.value(1);
+                QList<Player*>::const_iterator it;
+                for (it = otherPlayers.begin(); it != otherPlayers.end(); ++it)
+                {
+                    if ((*it)->id == id)
+                    {
+                        (*it)->name = name;
+                    }
+                }
+                qDebug() << "Player #" << id << " changed name to " << name;
+            }
+        }
+        else if (messageType == MessageType::PlayerDisconnected)
+        {
+            int id = message.toInt();
+            QMutableListIterator<Player*> it(otherPlayers);
+            while (it.hasNext())
+            {
+                Player* p = it.next();
+                if (id == p->id)
+                {
+                    qDebug() << "Player #" << id << " (" << p->name << ") disconnected";
+                    it.remove();
+                }
+            }
         }
         emit onDataReceived(messageType, message);
     }

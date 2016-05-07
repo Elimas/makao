@@ -4,12 +4,12 @@
 class MessageType
 {
 public:
-	static const int WelcomeClient = 1,
+    static const int WelcomeClientSetId = 1,
 		WelcomeServer = 2,
 		SetName = 3,
 		PlayerConnected = 4,
         PlayerDisconnected = 5,
-        Test = 6;
+        PlayerSetNewName = 6;
 };
 
 #endif // MESSAGETYPE_H

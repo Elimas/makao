@@ -4,15 +4,17 @@
 #include <QTcpSocket>
 
 Server::Server(QObject *parent, Player *player)
-	: QTcpServer(parent), hostPlayer(player)
+    : QTcpServer(parent), hostPlayer(player), nextId(2)
 {
 	QTime now = QTime::currentTime();
 	qsrand(now.msec());
+    hostPlayer->id = 1;
 }
 
 Server::~Server()
 {
     shutdown();
+    if (hostPlayer != NULL) delete hostPlayer;
 }
 
 void Server::incomingConnection(qintptr socketDescriptor)
@@ -27,11 +29,14 @@ void Server::incomingConnection(qintptr socketDescriptor)
 	connect(socket, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &Server::socketError);
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
     Player *player = new Player(this, QString("player%1").arg(qrand() % 10000));
+    player->id = nextId;
+    nextId++;
 	player->socket = socket;
+    sendMessageToAllPlayers(MessageType::PlayerConnected, QString("%1;%2").arg(player->id).arg(player->name));
 	otherPlayers.append(player);
     qDebug() << "Player " << player->name << " connected to server";
     emit onConnected(player);
-	sendMessage(socket, MessageType::WelcomeClient, "");
+    sendMessage(socket, MessageType::WelcomeClientSetId, QString::number(player->id));
 }
 
 void Server::sendMessage(Player const * const player, int messageType, QString message)
@@ -89,6 +94,15 @@ void Server::readData()
         {
             sender->name = message;
             qDebug() << "Player set new name " << message;
+            //send list of players to this player
+            sendMessage(sender, MessageType::PlayerConnected, QString("%1;%2").arg(hostPlayer->id).arg(hostPlayer->name));
+            QList<Player*>::const_iterator it;
+            for (it = otherPlayers.begin(); it != otherPlayers.end(); ++it)
+                if (sender != (*it)) sendMessage(sender, MessageType::PlayerConnected, QString("%1;%2").arg((*it)->id).arg((*it)->name));
+
+            //send this player to other players
+            for (it = otherPlayers.begin(); it != otherPlayers.end(); ++it)
+                if (sender != (*it)) sendMessage((*it), MessageType::PlayerSetNewName, QString("%1;%2").arg(sender->id).arg(sender->name));
         }
         emit onDataReceived(sender, messageType, message);
     }
@@ -105,8 +119,10 @@ void Server::disconnected()
     {
         if (it.next() == player) it.remove();
     }
+    sendMessageToAllPlayers(MessageType::PlayerDisconnected, QString::number(player->id));
     player->socket->disconnect(player->socket, 0, 0, 0);
     player->deleteLater();
+    emit afterDisconnected();
 }
 
 void Server::socketError(QAbstractSocket::SocketError socketError)

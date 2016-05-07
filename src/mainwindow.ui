@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Makao</string>
   </property>
   <property name="styleSheet">
    <string notr="true">#centralWidget {
@@ -42,7 +42,15 @@ border-radius: 10px 10px 10px 10px;
 QPushButton:hover
 {
 	background-color:qlineargradient(spread:pad, x1:0.340591, y1:0.415, x2:0.369, y2:0.903409, stop:0 rgba(255, 217, 93, 255), stop:0.948864 rgba(255, 250, 55, 255));
+}
+QLabel
+{
+	font-size: 20px;
+	color: white;
 }</string>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QGraphicsView" name="graphicsView">
@@ -176,8 +184,33 @@ QPushButton:hover
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>260</y>
+      <width>181</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>[TEST]Client</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>180</y>
+      <width>181</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>[TEST]Server</string>
+    </property>
+   </widget>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
