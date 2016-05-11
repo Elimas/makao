@@ -1,6 +1,7 @@
 #include "lobbywidget.h"
 #include "ui_lobbywidget.h"
 #include "messagetype.h"
+#include "gamescreenwidget.h"
 
 LobbyWidget::LobbyWidget(QWidget *parent) :
     QWidget(parent),
@@ -30,6 +31,7 @@ LobbyWidget::~LobbyWidget()
 LobbyWidget* LobbyWidget::createServerLobby(QWidget *parent, Server *server, int port)
 {
     LobbyWidget *l = new LobbyWidget(parent);
+    l->mainWindowParent=parent;
     l->isServer = true;
     l->server = server;
     l->client = NULL;
@@ -42,6 +44,7 @@ LobbyWidget* LobbyWidget::createClientLobby(QWidget *parent, Client *client, QSt
 {
     LobbyWidget *l = new LobbyWidget(parent);
     l->isServer = false;
+    l->mainWindowParent=parent;
     l->client = client;
     l->server = NULL;
     l->serverIP = serverIP;
@@ -175,4 +178,16 @@ void LobbyWidget::on_buttonBack_clicked()
 {
     this->hide();
     this->deleteLater();
+}
+void LobbyWidget::on_buttonStart_clicked()
+{
+    GameScreenWidget *gameWindow = new GameScreenWidget(mainWindowParent);
+
+
+    gameWindow->show();
+
+    this->hide();
+    this->deleteLater();
+
+
 }

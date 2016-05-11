@@ -20,7 +20,8 @@ SOURCES += src/main.cpp\
     src/client.cpp \
     src/player.cpp \
     src/server.cpp \
-    src/lobbywidget.cpp
+    src/lobbywidget.cpp \
+    src/gamescreenwidget.cpp
 
 HEADERS  += src/mainwindow.h \
     src/cardswidget.h \
@@ -30,12 +31,15 @@ HEADERS  += src/mainwindow.h \
     src/messagetype.h \
     src/player.h \
     src/server.h \
-    src/lobbywidget.h
+    src/lobbywidget.h \
+    src/gamescreenwidget.h
 
 FORMS    += src/mainwindow.ui \
     src/cardswidget.ui \
     src/singlecardwidget.ui \
-    src/lobbywidget.ui
+    src/lobbywidget.ui \
+    src/gamescreenwidget.ui
 
 RESOURCES += \
-    tlomenu.qrc
+    tlomenu.qrc \
+    gamescreen.qrc

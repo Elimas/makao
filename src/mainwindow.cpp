@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete lobbyWidget;
+    //delete gameScreenWidget;
     /*delete player;
     delete server;
     delete client;*/

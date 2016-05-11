@@ -23,6 +23,7 @@ public:
 
 private:
     Ui::LobbyWidget *ui;
+    QWidget *mainWindowParent;
     bool isServer;
     QString serverIP;
     int port;
@@ -45,6 +46,7 @@ private slots:
     void onClientDataReceived(int messageType, QString message);
 
     void on_buttonBack_clicked();
+    void on_buttonStart_clicked();
 };
 
 #endif // LOBBYWIDGET_H
