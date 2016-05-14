@@ -13,6 +13,7 @@ private:
 	Player *hostPlayer;
 	QList<Player*> otherPlayers;
 	Player* findPlayer(QTcpSocket* socket);
+    int nextId;
 
 public:
 	Server(QObject *parent, Player *hostPlayer);
@@ -35,6 +36,7 @@ private slots:
 signals:
 	void onConnected(Player const * const player);
 	void onDisconnected(Player const * const player);
+    void afterDisconnected();
 	void onError(QAbstractSocket::SocketError socketError);
 	void onDataReceived(Player const * const sender, int messageType, QString message);
 

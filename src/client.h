@@ -10,6 +10,7 @@ class Client : public QObject
 
 private:
 	Player *player;
+    QList<Player*> otherPlayers;
 
 public:
     Client(QObject *parent, Player *player);
@@ -20,6 +21,7 @@ public:
     void disconnectFromHost();
 	const QTcpSocket* getSocket() const { return player->socket; }
 	const Player* getPlayer() const { return player; }
+    QList<Player*> getOtherPlayers() { return otherPlayers; }
 
 signals:
 	void onConnected();
