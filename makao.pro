@@ -19,7 +19,8 @@ SOURCES += src/main.cpp\
     src/card.cpp \
     src/client.cpp \
     src/player.cpp \
-    src/server.cpp
+    src/server.cpp \
+    src/table.cpp
 
 HEADERS  += src/mainwindow.h \
     src/cardswidget.h \
@@ -28,7 +29,8 @@ HEADERS  += src/mainwindow.h \
     src/client.h \
     src/messagetype.h \
     src/player.h \
-    src/server.h
+    src/server.h \
+    src/table.h
 
 FORMS    += src/mainwindow.ui \
     src/cardswidget.ui \

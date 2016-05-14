@@ -50,3 +50,8 @@ build
 *.suo
 *.exe
 *.ilk
+/makao.VC.VC.opendb
+/makao.VC.db
+/makao.sln
+*.user
+makao.pro.user

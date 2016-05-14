@@ -28,8 +28,7 @@ public:
         Jack,
         Queen,
         King,
-        Ace,
-        Joker
+        Ace
     };
 
     enum class Color

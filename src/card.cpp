@@ -75,8 +75,6 @@ QString Card::getPipAsText() const
         return "K";
     case Pip::Ace:
         return "A";
-    case Pip::Joker:
-        return "J";
     default:
         return "X";
     }
