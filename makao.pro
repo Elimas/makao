@@ -21,7 +21,7 @@ SOURCES += src/main.cpp\
     src/player.cpp \
     src/server.cpp \
     src/lobbywidget.cpp \
-    src/gamescreenwidget.cpp
+    src/gamescreenwidget.cpp \
     src/server.cpp \
     src/table.cpp
 
@@ -34,7 +34,7 @@ HEADERS  += src/mainwindow.h \
     src/player.h \
     src/server.h \
     src/lobbywidget.h \
-    src/gamescreenwidget.h
+    src/gamescreenwidget.h \
     src/server.h \
     src/table.h
 
