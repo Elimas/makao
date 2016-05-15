@@ -15,6 +15,9 @@ public:
     explicit GameScreenWidget(QWidget *parent = 0);
     ~GameScreenWidget();
 
+private slots:
+    void on_DrawButton_clicked();
+
 private:
     Ui::GameScreenWidget *ui;
 };

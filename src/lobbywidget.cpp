@@ -43,8 +43,8 @@ LobbyWidget* LobbyWidget::createServerLobby(QWidget *parent, Server *server, int
 LobbyWidget* LobbyWidget::createClientLobby(QWidget *parent, Client *client, QString serverIP, int port)
 {
     LobbyWidget *l = new LobbyWidget(parent);
-    l->isServer = false;
     l->mainWindowParent=parent;
+    l->isServer = false;
     l->client = client;
     l->server = NULL;
     l->serverIP = serverIP;
@@ -182,12 +182,7 @@ void LobbyWidget::on_buttonBack_clicked()
 void LobbyWidget::on_buttonStart_clicked()
 {
     GameScreenWidget *gameWindow = new GameScreenWidget(mainWindowParent);
-
-
     gameWindow->show();
-
     this->hide();
     this->deleteLater();
-
-
 }
