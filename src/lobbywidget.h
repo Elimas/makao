@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include "server.h"
 #include "client.h"
+#include <QPointer>
 
 namespace Ui {
 class LobbyWidget;
@@ -27,8 +28,9 @@ private:
     bool isServer;
     QString serverIP;
     int port;
-    Server *server;
-    Client *client;
+    QPointer<Server> server;
+    QPointer<Client> client;
+    bool deleteServerFlag;
     LobbyWidget(QWidget *parent = 0);
     void log(QString message);
     void updatePlayersList();

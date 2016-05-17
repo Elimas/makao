@@ -14,7 +14,8 @@ Server::Server(QObject *parent, Player *player)
 Server::~Server()
 {
     shutdown();
-    if (hostPlayer != NULL) delete hostPlayer;
+    if (!hostPlayer.isNull()) hostPlayer->deleteLater();
+    hostPlayer = NULL;
 }
 
 void Server::incomingConnection(qintptr socketDescriptor)

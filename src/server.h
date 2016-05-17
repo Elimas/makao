@@ -10,7 +10,7 @@ class Server : public QTcpServer
 	Q_OBJECT
 
 private:
-	Player *hostPlayer;
+    QPointer<Player> hostPlayer;
 	QList<Player*> otherPlayers;
 	Player* findPlayer(QTcpSocket* socket);
     int nextId;
