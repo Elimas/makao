@@ -12,3 +12,9 @@ GameScreenWidget::~GameScreenWidget()
 {
     delete ui;
 }
+
+void GameScreenWidget::on_DrawButton_clicked()
+{
+    this->hide();
+    this->deleteLater();
+}

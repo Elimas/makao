@@ -6,53 +6,123 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>720</width>
+    <height>540</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <property name="styleSheet">
+   <string notr="true">#Game{
+background-image: url(:/game/Grafiki/game_bg.png);
+}</string>
+  </property>
+  <widget class="QFrame" name="Game">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>260</y>
-     <width>87</width>
-     <height>29</height>
+     <x>0</x>
+     <y>0</y>
+     <width>720</width>
+     <height>540</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Start</string>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
-  </widget>
-  <widget class="QTableView" name="ddddd">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>20</y>
-     <width>256</width>
-     <height>192</height>
-    </rect>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
    </property>
-  </widget>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>170</y>
-     <width>176</width>
-     <height>29</height>
-    </rect>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
    </property>
-   <property name="whatsThis">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;xxxxxxxx&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
+   <widget class="CardsWidget" name="Player1" native="true">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>410</y>
+      <width>241</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="CardsWidget" name="Player4" native="true">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>170</y>
+      <width>91</width>
+      <height>241</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DrawButton">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>280</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">CardsWidget{
+	background-image:&quot;&quot;;
+}</string>
+    </property>
+    <property name="text">
+     <string>Ciągnij kartę</string>
+    </property>
+   </widget>
+   <widget class="SingleCardWidget" name="TableCard" native="true">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>220</y>
+      <width>121</width>
+      <height>141</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="CardsWidget" name="Player2" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>180</y>
+      <width>101</width>
+      <height>241</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="CardsWidget" name="Player3" native="true">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>10</y>
+      <width>241</width>
+      <height>80</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CardsWidget</class>
+   <extends>QWidget</extends>
+   <header>cardswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SingleCardWidget</class>
+   <extends>QWidget</extends>
+   <header>singlecardwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
