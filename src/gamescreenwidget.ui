@@ -77,11 +77,11 @@ background-image: url(:/game/Grafiki/game_bg.png);
      <string>Ciągnij kartę</string>
     </property>
    </widget>
-   <widget class="SingleCardWidget" name="TableCard" native="true">
+   <widget class="QWidget" name="TableCard" native="true">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>220</y>
+      <x>300</x>
+      <y>180</y>
       <width>121</width>
       <height>141</height>
      </rect>
@@ -114,12 +114,6 @@ background-image: url(:/game/Grafiki/game_bg.png);
    <class>CardsWidget</class>
    <extends>QWidget</extends>
    <header>cardswidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>SingleCardWidget</class>
-   <extends>QWidget</extends>
-   <header>singlecardwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

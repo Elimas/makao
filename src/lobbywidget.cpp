@@ -185,6 +185,7 @@ void LobbyWidget::on_buttonStart_clicked()
 {
     GameScreenWidget *gameWindow = new GameScreenWidget(mainWindowParent, server, client, isServer);
     server->sendMessageToAllPlayers(MessageType::StartGame, "");
+    server->allowConnecting = false;
     gameWindow->show();
     deleteServerFlag = false;
     this->hide();

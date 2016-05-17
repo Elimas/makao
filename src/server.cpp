@@ -4,7 +4,7 @@
 #include <QTcpSocket>
 
 Server::Server(QObject *parent, Player *player)
-    : QTcpServer(parent), hostPlayer(player), nextId(2)
+    : QTcpServer(parent), hostPlayer(player), nextId(2), allowConnecting(true)
 {
 	QTime now = QTime::currentTime();
 	qsrand(now.msec());
@@ -25,6 +25,12 @@ void Server::incomingConnection(qintptr socketDescriptor)
 		qDebug() << socket->error();
 		return;
 	}
+    if (!allowConnecting || otherPlayers.size() >= 3) //max mogą się dołączyć 3 gracze
+    {
+        socket->close();
+        socket->deleteLater();
+        return;
+    }
 	connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 	typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
 	connect(socket, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error), this, &Server::socketError);

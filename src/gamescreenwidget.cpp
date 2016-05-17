@@ -1,6 +1,7 @@
 #include "gamescreenwidget.h"
 #include "ui_gamescreenwidget.h"
 #include "messagetype.h"
+#include <QDesktopWidget>
 
 GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *client, bool isServer) :
     QWidget(parent), server(server), client(client), isServer(isServer),
@@ -21,6 +22,10 @@ GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *clie
         connect(server, SIGNAL(onDataReceived(Player*const,int,QString)), this, SLOT(onServerDataReceived(Player*const,int,QString)));
         connect(server, SIGNAL(onError(QAbstractSocket::SocketError)), this, SLOT(onServerError(QAbstractSocket::SocketError)));
     }
+    if (ui->TableCard != NULL) delete ui->TableCard;
+    ui->TableCard = new SingleCardWidget(table.topCard(), parent);
+    ui->TableCard->move(ui->Game->rect().center() - ui->TableCard->rect().center());
+    ui->TableCard->show();
 }
 
 GameScreenWidget::~GameScreenWidget()

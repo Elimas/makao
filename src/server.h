@@ -16,6 +16,7 @@ private:
     int nextId;
 
 public:
+    bool allowConnecting;
 	Server(QObject *parent, Player *hostPlayer);
 	~Server();
 	const Player* getHostPlayer() const { return hostPlayer; }

@@ -5,6 +5,7 @@
 #include "server.h"
 #include "client.h"
 #include <QPointer>
+#include "table.h"
 
 namespace Ui {
 class GameScreenWidget;
@@ -15,6 +16,7 @@ class GameScreenWidget : public QWidget
     Q_OBJECT
 
 private:
+    Table table;
     QPointer<Server> server;
     QPointer<Client> client;
     bool isServer;
