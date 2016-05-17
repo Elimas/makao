@@ -12,18 +12,10 @@ LobbyWidget::LobbyWidget(QWidget *parent) :
 
 LobbyWidget::~LobbyWidget()
 {
-    if (server != NULL)
+    if (deleteServerFlag)
     {
-        //delete server->getHostPlayer();
-        delete server;
-        server = NULL;
-    }
-    if (client != NULL)
-    {
-        //Player* player = client->getPlayer();
-        delete client;
-        //delete player;
-        client = NULL;
+        if (server) server->deleteLater();
+        if (client) client->deleteLater();
     }
     delete ui;
 }
@@ -37,6 +29,7 @@ LobbyWidget* LobbyWidget::createServerLobby(QWidget *parent, Server *server, int
     l->client = NULL;
     l->port = port;
     l->serverIP = QString();
+    l->deleteServerFlag = true;
     return l;
 }
 
@@ -49,6 +42,8 @@ LobbyWidget* LobbyWidget::createClientLobby(QWidget *parent, Client *client, QSt
     l->server = NULL;
     l->serverIP = serverIP;
     l->port = port;
+    l->ui->buttonStart->setEnabled(false);
+    l->deleteServerFlag = true;
     return l;
 }
 
@@ -172,6 +167,13 @@ void LobbyWidget::onClientDataReceived(int messageType, QString message)
     {
         updatePlayersList();
     }
+    else if (messageType == MessageType::StartGame)
+    {
+        GameScreenWidget *gameWindow = new GameScreenWidget(mainWindowParent, server, client, isServer);
+        gameWindow->show();
+        this->hide();
+        this->deleteLater();
+    }
 }
 
 void LobbyWidget::on_buttonBack_clicked()
@@ -181,8 +183,10 @@ void LobbyWidget::on_buttonBack_clicked()
 }
 void LobbyWidget::on_buttonStart_clicked()
 {
-    GameScreenWidget *gameWindow = new GameScreenWidget(mainWindowParent);
+    GameScreenWidget *gameWindow = new GameScreenWidget(mainWindowParent, server, client, isServer);
+    server->sendMessageToAllPlayers(MessageType::StartGame, "");
     gameWindow->show();
+    deleteServerFlag = false;
     this->hide();
     this->deleteLater();
 }

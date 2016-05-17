@@ -5,6 +5,7 @@
 #include "lobbywidget.h"
 #include "server.h"
 #include "client.h"
+#include <QPointer>
 
 namespace Ui {
 class MainWindow;
@@ -46,8 +47,8 @@ private:
     Ui::MainWindow *ui;
     QPointer<LobbyWidget> lobbyWidget;
     Player *player;
-    Server *server;
-    Client *client;
+    QPointer<Server> server;
+    QPointer<Client> client;
 };
 
 #endif // MAINWINDOW_H

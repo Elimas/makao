@@ -9,7 +9,8 @@ public:
 		SetName = 3,
 		PlayerConnected = 4,
         PlayerDisconnected = 5,
-        PlayerSetNewName = 6;
+        PlayerSetNewName = 6,
+        StartGame = 7;
 };
 
 #endif // MESSAGETYPE_H
