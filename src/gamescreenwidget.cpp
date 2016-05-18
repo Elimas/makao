@@ -1,13 +1,22 @@
 #include "gamescreenwidget.h"
 #include "ui_gamescreenwidget.h"
 #include "messagetype.h"
+#include "opponentcardswidget.h"
 #include <QDesktopWidget>
 
 GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *client, bool isServer) :
     QWidget(parent), server(server), client(client), isServer(isServer),
     ui(new Ui::GameScreenWidget)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
+
+    ui->Player2->setOrientation(OpponentCardsWidget::Orientation::Vertical);
+    ui->Player4->setOrientation(OpponentCardsWidget::Orientation::Vertical);
+
+	//TODO: przyklad
+	ui->Player2->setCardsNumber(3);
+	ui->Player3->setCardsNumber(4);
+	ui->Player4->setCardsNumber(1);
 
     if (!isServer)
     {

@@ -49,12 +49,12 @@ background-image: url(:/game/Grafiki/game_bg.png);
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="CardsWidget" name="Player4" native="true">
+   <widget class="OpponentCardsWidget" name="Player4" native="true">
     <property name="geometry">
      <rect>
-      <x>610</x>
+      <x>590</x>
       <y>170</y>
-      <width>91</width>
+      <width>120</width>
       <height>241</height>
      </rect>
     </property>
@@ -87,29 +87,35 @@ background-image: url(:/game/Grafiki/game_bg.png);
      </rect>
     </property>
    </widget>
-   <widget class="CardsWidget" name="Player2" native="true">
+   <widget class="OpponentCardsWidget" name="Player2" native="true">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>180</y>
-      <width>101</width>
+      <width>120</width>
       <height>241</height>
      </rect>
     </property>
    </widget>
-   <widget class="CardsWidget" name="Player3" native="true">
+   <widget class="OpponentCardsWidget" name="Player3" native="true">
     <property name="geometry">
      <rect>
       <x>210</x>
       <y>10</y>
-      <width>241</width>
-      <height>80</height>
+      <width>301</width>
+      <height>170</height>
      </rect>
     </property>
    </widget>
   </widget>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>OpponentCardsWidget</class>
+   <extends>QWidget</extends>
+   <header>opponentcardswidget.h</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>CardsWidget</class>
    <extends>QWidget</extends>

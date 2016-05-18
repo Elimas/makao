@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/game">
         <file>Grafiki/game_bg.png</file>
+        <file>Grafiki/card_back.png</file>
     </qresource>
 </RCC>
