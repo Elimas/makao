@@ -19,8 +19,8 @@ public:
     bool allowConnecting;
 	Server(QObject *parent, Player *hostPlayer);
 	~Server();
-	const Player* getHostPlayer() const { return hostPlayer; }
-	const QList<Player*> getOtherPlayers() const { return otherPlayers; }
+    Player* getHostPlayer() const { return hostPlayer; }
+    QList<Player*> getOtherPlayers() { return otherPlayers; }
 	void sendMessage(Player const * const player, int messageType, QString message);
 	void sendMessage(QTcpSocket* socket, int messageType, QString message);
 	void sendMessageToAllPlayers(int messageType, QString message);
@@ -39,7 +39,7 @@ signals:
 	void onDisconnected(Player const * const player);
     void afterDisconnected();
 	void onError(QAbstractSocket::SocketError socketError);
-	void onDataReceived(Player const * const sender, int messageType, QString message);
+    void onDataReceived(Player* sender, int messageType, QString message);
 
 };
 

@@ -1,7 +1,7 @@
 #include "player.h"
 
 Player::Player(QObject *parent, QString name) :
-    QObject(parent), name(name), socket(new QTcpSocket(this)), id(0)
+    QObject(parent), name(name), socket(new QTcpSocket(this)), id(0), cardsCount(0), ready(false)
 {
 
 }

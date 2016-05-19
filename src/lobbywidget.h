@@ -40,7 +40,7 @@ private slots:
     void onServerDisconnected(Player const * const player);
     void onServerAfterDisconnected();
     void onServerError(QAbstractSocket::SocketError socketError);
-    void onServerDataReceived(Player const * const sender, int messageType, QString message);
+    void onServerDataReceived(Player* sender, int messageType, QString message);
 
     void onClientConnected();
     void onClientDisconnected();

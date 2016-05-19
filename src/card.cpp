@@ -1,4 +1,5 @@
 #include "card.h"
+#include <QStringList>
 
 Card::Card(const Suit suit, const Pip pip)
     :   suit(suit)
@@ -78,4 +79,10 @@ QString Card::getPipAsText() const
     default:
         return "X";
     }
+}
+
+Card Card::deserialize(QString str)
+{
+    QStringList a = str.split(";");
+    return Card(static_cast<Card::Suit>(a.value(0).toInt()), static_cast<Card::Pip>(a.value(1).toInt()));
 }

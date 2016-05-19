@@ -16,6 +16,14 @@
   <property name="styleSheet">
    <string notr="true">#Game{
 background-image: url(:/game/Grafiki/game_bg.png);
+}
+QPushButton
+{
+font-size: 18px;
+}
+QLabel
+{
+font-size: 15px;
 }</string>
   </property>
   <widget class="QFrame" name="Game">
@@ -36,13 +44,13 @@ background-image: url(:/game/Grafiki/game_bg.png);
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="CardsWidget" name="Player1" native="true">
+   <widget class="CardsWidget" name="CurrentPlayer" native="true">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>410</y>
-      <width>241</width>
-      <height>121</height>
+      <x>130</x>
+      <y>400</y>
+      <width>581</width>
+      <height>185</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -57,24 +65,6 @@ background-image: url(:/game/Grafiki/game_bg.png);
       <width>120</width>
       <height>241</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="DrawButton">
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>280</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">CardsWidget{
-	background-image:&quot;&quot;;
-}</string>
-    </property>
-    <property name="text">
-     <string>Ciągnij kartę</string>
     </property>
    </widget>
    <widget class="QWidget" name="TableCard" native="true">
@@ -105,6 +95,58 @@ background-image: url(:/game/Grafiki/game_bg.png);
       <width>301</width>
       <height>170</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cardButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>440</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">CardsWidget{
+	background-image:&quot;&quot;;
+}</string>
+    </property>
+    <property name="text">
+     <string>Ciągnij kartę</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="exitButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>490</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">CardsWidget{
+	background-image:&quot;&quot;;
+}</string>
+    </property>
+    <property name="text">
+     <string>Wyjście</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelCurrentPlayer">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>375</y>
+      <width>581</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Player</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>

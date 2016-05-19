@@ -20,6 +20,7 @@ public:
     ~CardsWidget();
 
     void addCard(const Card& card);
+    void removeCard(int index);
 
 signals:
     void cardClicked(const Card& card);

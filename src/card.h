@@ -48,6 +48,11 @@ public:
     QString getSuitAsText() const;
     QString getPipAsText() const;
 
+    int getSuitAsInt() const { return static_cast<int>(suit); }
+    int getPipAsInt() const { return static_cast<int>(pip); }
+    QString serialize() const { return QString("%1;%2").arg(getSuitAsInt()).arg(getPipAsInt()); }
+    static Card deserialize(QString str);
+
 private:
     Suit suit;
     Pip pip;

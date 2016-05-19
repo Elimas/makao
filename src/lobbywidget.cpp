@@ -54,7 +54,7 @@ void LobbyWidget::startServer()
         connect(server, SIGNAL(onConnected(Player*const)), this, SLOT(onServerConnected(Player*const)));
         connect(server, SIGNAL(onDisconnected(Player*const)), this, SLOT(onServerDisconnected(Player*const)));
         connect(server, SIGNAL(afterDisconnected()), this, SLOT(onServerAfterDisconnected()));
-        connect(server, SIGNAL(onDataReceived(Player*const,int,QString)), this, SLOT(onServerDataReceived(Player*const,int,QString)));
+        connect(server, SIGNAL(onDataReceived(Player*,int,QString)), this, SLOT(onServerDataReceived(Player*,int,QString)));
         connect(server, SIGNAL(onError(QAbstractSocket::SocketError)), this, SLOT(onServerError(QAbstractSocket::SocketError)));
         if (server->listen(QHostAddress::Any, port))
         {
@@ -130,13 +130,13 @@ void LobbyWidget::onServerError(QAbstractSocket::SocketError socketError)
 {
     log("Socket error");
 }
-void LobbyWidget::onServerDataReceived(Player const * const sender, int messageType, QString message)
+void LobbyWidget::onServerDataReceived(Player* sender, int messageType, QString message)
 {
     if (messageType == MessageType::SetName) {
         log(QString("Player set new name %1").arg(message));
         updatePlayersList();
     }
-    log(QString("[DEBUG] Type: %1 Msg: %2").arg(messageType).arg(message));
+    log(QString("[DEBUG][Lobby] Type: %1 Msg: %2").arg(messageType).arg(message));
 }
 //slots in client
 void LobbyWidget::onClientConnected()
@@ -146,6 +146,12 @@ void LobbyWidget::onClientConnected()
 void LobbyWidget::onClientDisconnected()
 {
     log("Disconnected from server");
+    QMessageBox msgBox;
+    QString msg = QString("Utracono połączenie z hostem. Wracanie do menu.");
+    msgBox.setText(msg);
+    msgBox.setIcon(QMessageBox::Icon::Critical);
+    msgBox.exec();
+    this->deleteLater();
 }
 void LobbyWidget::onClientError(QAbstractSocket::SocketError socketError)
 {
@@ -162,15 +168,17 @@ void LobbyWidget::onClientError(QAbstractSocket::SocketError socketError)
 }
 void LobbyWidget::onClientDataReceived(int messageType, QString message)
 {
-    log(QString("[DEBUG] Type: %1 Msg: %2").arg(messageType).arg(message));
+    log(QString("[DEBUG][Lobby] Type: %1 Msg: %2").arg(messageType).arg(message));
     if (messageType == MessageType::PlayerConnected || messageType == MessageType::PlayerDisconnected || messageType == MessageType::PlayerSetNewName)
     {
         updatePlayersList();
     }
     else if (messageType == MessageType::StartGame)
     {
+        deleteServerFlag = false;
         GameScreenWidget *gameWindow = new GameScreenWidget(mainWindowParent, server, client, isServer);
         gameWindow->show();
+        //client->disconnect();
         this->hide();
         this->deleteLater();
     }
@@ -183,11 +191,26 @@ void LobbyWidget::on_buttonBack_clicked()
 }
 void LobbyWidget::on_buttonStart_clicked()
 {
-    GameScreenWidget *gameWindow = new GameScreenWidget(mainWindowParent, server, client, isServer);
-    server->sendMessageToAllPlayers(MessageType::StartGame, "");
-    server->allowConnecting = false;
-    gameWindow->show();
-    deleteServerFlag = false;
-    this->hide();
-    this->deleteLater();
+    if (isServer)
+    {
+        if (server->getOtherPlayers().size() > 0)
+        {
+            GameScreenWidget *gameWindow = new GameScreenWidget(mainWindowParent, server, client, isServer);
+            server->sendMessageToAllPlayers(MessageType::StartGame, "");
+            server->allowConnecting = false;
+            gameWindow->show();
+            deleteServerFlag = false;
+            //server->disconnect();
+            this->hide();
+            this->deleteLater();
+        }
+        else
+        {
+            QMessageBox msgBox;
+            QString msg = QString("Musi dołączyć co najmniej 1 gracz");
+            msgBox.setText(msg);
+            msgBox.setIcon(QMessageBox::Warning);
+            msgBox.exec();
+        }
+    }
 }

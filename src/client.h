@@ -20,7 +20,7 @@ public:
 	void sendMessage(int messageType, QString message);
     void disconnectFromHost();
 	const QTcpSocket* getSocket() const { return player->socket; }
-	const Player* getPlayer() const { return player; }
+    Player* getPlayer() const { return player; }
     QList<Player*> getOtherPlayers() { return otherPlayers; }
 
 signals:

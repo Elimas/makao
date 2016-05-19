@@ -26,20 +26,21 @@ public:
     ~GameScreenWidget();
 
 private slots:
-    void on_DrawButton_clicked();
-
     void onServerDisconnected(Player const * const player);
     void onServerAfterDisconnected();
     void onServerError(QAbstractSocket::SocketError socketError);
-    void onServerDataReceived(Player const * const sender, int messageType, QString message);
+    void onServerDataReceived(Player* sender, int messageType, QString message);
 
     void onClientDisconnected();
     void onClientError(QAbstractSocket::SocketError socketError);
     void onClientDataReceived(int messageType, QString message);
 
+    void on_exitButton_clicked();
+
 private:
     Ui::GameScreenWidget *ui;
     void log(QString message);
+    void startGame();
 };
 
 #endif // GAMESCREENWIDGET_H
