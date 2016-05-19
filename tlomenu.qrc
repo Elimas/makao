@@ -6,5 +6,6 @@
         <file>Grafiki/NazwaGry.png</file>
         <file>Grafiki/ip.png</file>
         <file>Grafiki/nick.png</file>
+        <file>Grafiki/port.png</file>
     </qresource>
 </RCC>

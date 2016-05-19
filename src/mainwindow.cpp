@@ -9,10 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->txtNick->setVisible(false);
-    ui->txtIP->setVisible(false);
-    ui->gphNick->setVisible(false);
-    ui->gphIP->setVisible(false);
+    ui->frameJoin->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -45,13 +42,10 @@ void MainWindow::on_btnWyjscie_clicked()
 
 void MainWindow::on_btnDolacz_clicked()
 {
-    ui->btnDolacz->setVisible(true);
+    ui->btnDolacz->setVisible(false);
     ui->btnStworz->setVisible(false);
-    ui->btnWyjscie->setText("Powrót");
-    ui->txtNick->setVisible(true);
-    ui->txtIP->setVisible(true);
-    ui->gphNick->setVisible(true);
-    ui->gphIP->setVisible(true);
+    ui->btnWyjscie->setVisible(false);
+    ui->frameJoin->setVisible(true);
 
 }
 
@@ -95,4 +89,16 @@ void MainWindow::on_pushButton_2_clicked()
 void MainWindow::on_pushButton_clicked()
 {
     joinGame("clientPlayer", "127.0.0.1", port);
+}
+
+void MainWindow::on_btnPowrot_clicked()
+{
+    ui->btnDolacz->setVisible(true);
+    ui->btnStworz->setVisible(true);
+    ui->frameJoin->setVisible(false);
+}
+
+void MainWindow::on_btnDolaczdoGry_clicked()
+{
+   joinGame("clientPlayer", "127.0.0.1", port);
 }

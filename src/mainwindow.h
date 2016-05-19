@@ -42,6 +42,10 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_btnPowrot_clicked();
+
+    void on_btnDolaczdoGry_clicked();
+
 private:
     const int port = 2014;
     Ui::MainWindow *ui;
