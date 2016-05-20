@@ -12,19 +12,37 @@ GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *clie
 {
 	ui->setupUi(this);
 
-    ui->Player2->setOrientation(OpponentCardsWidget::Orientation::Vertical);
+    ui->Player3->setOrientation(OpponentCardsWidget::Orientation::Vertical);
     ui->Player4->setOrientation(OpponentCardsWidget::Orientation::Vertical);
-
-	//TODO: przyklad
-	ui->Player2->setCardsNumber(3);
-	ui->Player3->setCardsNumber(4);
-	ui->Player4->setCardsNumber(1);
 
     if (!isServer)
     {
         connect(client, SIGNAL(onDisconnected()), this, SLOT(onClientDisconnected()));
         connect(client, SIGNAL(onDataReceived(int,QString)), this, SLOT(onClientDataReceived(int,QString)));
         connect(client, SIGNAL(onError(QAbstractSocket::SocketError)), this, SLOT(onClientError(QAbstractSocket::SocketError)));
+        ui->labelCurrentPlayer->setText(client->getPlayer()->getName());
+        ui->labelPlayer2->hide();
+        ui->labelPlayer3->hide();
+        ui->labelPlayer4->hide();
+        for (int i = 0; i < client->getOtherPlayers().size(); i++)
+        {
+            Player* p = client->getOtherPlayers().at(i);
+            switch(i)
+            {
+            case 0:
+                ui->labelPlayer2->show();
+                ui->labelPlayer2->setText(p->getName());
+                break;
+            case 1:
+                ui->labelPlayer3->show();
+                ui->labelPlayer3->setText(p->getName());
+                break;
+            case 2:
+                ui->labelPlayer4->show();
+                ui->labelPlayer4->setText(p->getName());
+                break;
+            }
+        }
     }
     else
     {
@@ -32,6 +50,29 @@ GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *clie
         connect(server, SIGNAL(afterDisconnected()), this, SLOT(onServerAfterDisconnected()));
         connect(server, SIGNAL(onDataReceived(Player*,int,QString)), this, SLOT(onServerDataReceived(Player*,int,QString)));
         connect(server, SIGNAL(onError(QAbstractSocket::SocketError)), this, SLOT(onServerError(QAbstractSocket::SocketError)));
+        ui->labelCurrentPlayer->setText(server->getHostPlayer()->getName());
+        ui->labelPlayer2->hide();
+        ui->labelPlayer3->hide();
+        ui->labelPlayer4->hide();
+        for (int i = 0; i < server->getOtherPlayers().size(); i++)
+        {
+            Player* p = server->getOtherPlayers().at(i);
+            switch(i)
+            {
+            case 0:
+                ui->labelPlayer2->show();
+                ui->labelPlayer2->setText(p->getName());
+                break;
+            case 1:
+                ui->labelPlayer3->show();
+                ui->labelPlayer3->setText(p->getName());
+                break;
+            case 2:
+                ui->labelPlayer4->show();
+                ui->labelPlayer4->setText(p->getName());
+                break;
+            }
+        }
     }
     if (ui->TableCard != NULL) delete ui->TableCard;
     ui->TableCard = new SingleCardWidget(table.topCard(), this);
@@ -128,7 +169,27 @@ void GameScreenWidget::onClientDataReceived(int messageType, QString message)
         for (int i = 0; i < client->getOtherPlayers().size(); i++)
         {
             Player* p = client->getOtherPlayers().at(i);
-            if (p->getId() == playerId) p->cardsCount = cardsCount;
+            if (p->getId() == playerId)
+            {
+                OpponentCardsWidget *o = NULL;
+                p->cardsCount = cardsCount;
+                switch (i)
+                {
+                case 0:
+                    o = ui->Player2;
+                    break;
+                case 1:
+                    o = ui->Player3;
+                    break;
+                case 2:
+                    o = ui->Player4;
+                    break;
+                }
+                if (o != NULL)
+                {
+                    o->setCardsNumber(cardsCount);
+                }
+            }
         }
     }
     else if (messageType == MessageType::PlayerTurn)
@@ -167,10 +228,29 @@ void GameScreenWidget::startGame()
             server->sendMessage(p, MessageType::AddCard, c.serialize());
         }
     }
-    for (int j = 0; j < server->getOtherPlayers().size(); j++)
+    server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->cardsCount));
+    for (int i = 0; i < server->getOtherPlayers().size(); i++)
     {
-        Player* p = server->getOtherPlayers().at(j);
+        Player* p = server->getOtherPlayers().at(i);
         server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(p->getId()).arg(p->cardsCount));
+
+        OpponentCardsWidget *o = NULL;
+        switch (i)
+        {
+        case 0:
+            o = ui->Player2;
+            break;
+        case 1:
+            o = ui->Player3;
+            break;
+        case 2:
+            o = ui->Player4;
+            break;
+        }
+        if (o != NULL)
+        {
+            o->setCardsNumber(p->cardsCount);
+        }
     }
     //losujemy gracza który zaczyna grę
     srand(time(NULL));
