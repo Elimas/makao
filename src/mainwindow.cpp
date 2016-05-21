@@ -46,17 +46,23 @@ void MainWindow::on_btnDolacz_clicked()
     ui->btnStworz->setVisible(false);
     ui->btnWyjscie->setVisible(false);
     ui->frameJoin->setVisible(true);
+    ui->btnStworzGre->setVisible(false);
 
 }
 
 void MainWindow::on_btnStworz_clicked()
 {
     ui->btnDolacz->setVisible(false);
-    ui->btnStworz->setVisible(true);
-    ui->btnWyjscie->setText("Powrót");
-    ui->txtNick->setVisible(true);
+    ui->btnStworz->setVisible(false);
+    ui->btnWyjscie->setVisible(false);
+       ui->txtNick->setVisible(true);
     ui->gphNick->setVisible(true);
-
+    ui->frameJoin->setVisible(true);
+    ui->txtIP->setVisible(false);
+    ui->txtport->setVisible(false);
+    ui->gphport->setVisible(false);
+    ui->gphIP->setVisible(false);
+    ui->btnStworzGre->setVisible(true);
 }
 
 void MainWindow::hostGame(QString playerName, int port)
@@ -96,9 +102,22 @@ void MainWindow::on_btnPowrot_clicked()
     ui->btnDolacz->setVisible(true);
     ui->btnStworz->setVisible(true);
     ui->frameJoin->setVisible(false);
+     ui->btnWyjscie->setVisible(true);
+      ui->txtIP->setVisible(true);
+     ui->txtport->setVisible(true);
+     ui->gphport->setVisible(true);
+     ui->gphIP->setVisible(true);
+     ui->txtNick->setVisible(true);
+     ui->gphNick->setVisible(true);
+     ui->btnStworzGre->setVisible(false);
 }
 
 void MainWindow::on_btnDolaczdoGry_clicked()
 {
    joinGame("clientPlayer", "127.0.0.1", port);
+}
+
+void MainWindow::on_btnStworzGre_clicked()
+{
+    hostGame("hostPlayer", port);
 }
