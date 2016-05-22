@@ -25,7 +25,7 @@ public:
     Player(QObject *parent, QString name);
 	~Player();
     int getId() const { return id; }
-    void setId(int id) { id = id; }
+    void setId(int id) { this->id = id; }
     QString getName() const { return name; }
     QPointer<QTcpSocket> getSocket() const { return socket; }
     void addCard(Card card) { cards.append(card); cardsCount++; }

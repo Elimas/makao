@@ -20,6 +20,8 @@ private:
     QPointer<Server> server;
     QPointer<Client> client;
     bool isServer;
+    int currentPlayerIndex;
+    int currentPlayerId;
 
 public:
     explicit GameScreenWidget(QWidget *parent, Server *server, Client *client, bool isServer);
@@ -37,10 +39,14 @@ private slots:
 
     void on_exitButton_clicked();
 
+    void on_cardButton_clicked();
+
 private:
     Ui::GameScreenWidget *ui;
     void log(QString message);
     void startGame();
+    void nextPlayerTurn();
+    void refreshTurnLabels();
 };
 
 #endif // GAMESCREENWIDGET_H

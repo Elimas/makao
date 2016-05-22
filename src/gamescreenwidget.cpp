@@ -7,7 +7,7 @@
 #include <QMessageBox>
 
 GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *client, bool isServer) :
-    QWidget(parent), server(server), client(client), isServer(isServer),
+    QWidget(parent), server(server), client(client), isServer(isServer), currentPlayerId(0), currentPlayerIndex(0),
     ui(new Ui::GameScreenWidget)
 {
 	ui->setupUi(this);
@@ -127,6 +127,17 @@ void GameScreenWidget::onServerDataReceived(Player* sender, int messageType, QSt
         }
         if (allReady) startGame();
     }
+    else if (messageType == MessageType::TakeNewCard)
+    {
+        if (currentPlayerId == sender->getId())
+        {
+            Card c = table.getNewCard();
+            sender->addCard(c);
+            server->sendMessage(sender, MessageType::AddCard, c.serialize());
+            server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(sender->getId()).arg(sender->cardsCount));
+            nextPlayerTurn();
+        }
+    }
 }
 //slots in client
 void GameScreenWidget::onClientDisconnected()
@@ -156,7 +167,6 @@ void GameScreenWidget::onClientDataReceived(int messageType, QString message)
     }
     else if (messageType == MessageType::AddCard)
     {
-        log("test");
         Card c = Card::deserialize(message);
         client->getPlayer()->addCard(c);
         ui->CurrentPlayer->addCard(c);
@@ -198,11 +208,25 @@ void GameScreenWidget::onClientDataReceived(int messageType, QString message)
         if (client->getPlayer()->getId() == playerId)
         {
             //TODO ruch aktualnego gracza
+            currentPlayerIndex = -1;
+            currentPlayerId = client->getPlayer()->getId();
         }
         else
         {
             //TODO tura innego gracza
+            for (int i = 0; i < client->getOtherPlayers().size(); i++)
+            {
+                Player* p = client->getOtherPlayers().at(i);
+                if (p->getId() == playerId)
+                {
+                    currentPlayerIndex = i;
+                    currentPlayerId = p->getId();
+                    break;
+                }
+            }
         }
+        log(QString("ID: %1, Index: %2, playerId: %3").arg(currentPlayerId).arg(currentPlayerIndex).arg(playerId));
+        refreshTurnLabels();
     }
 }
 
@@ -265,7 +289,10 @@ void GameScreenWidget::startGame()
     {
         id = server->getOtherPlayers().at(i)->getId();
     }
+    currentPlayerIndex = i;
+    currentPlayerId = id;
     server->sendMessageToAllPlayers(MessageType::PlayerTurn, QString::number(id));
+    refreshTurnLabels();
 }
 
 void GameScreenWidget::on_exitButton_clicked()
@@ -280,5 +307,62 @@ void GameScreenWidget::on_exitButton_clicked()
     {
         this->hide();
         this->deleteLater();
+    }
+}
+
+void GameScreenWidget::on_cardButton_clicked()
+{
+    if (isServer)
+    {
+        Card c = table.getNewCard();
+        server->getHostPlayer()->addCard(c);
+        ui->CurrentPlayer->addCard(c);
+        server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->cardsCount));
+        nextPlayerTurn();
+    }
+    else
+    {
+        client->sendMessage(MessageType::TakeNewCard, "");
+    }
+}
+
+void GameScreenWidget::nextPlayerTurn()
+{
+    currentPlayerIndex++;
+    if (currentPlayerIndex >= server->getOtherPlayers().size())
+        currentPlayerIndex = -1;
+    if (currentPlayerIndex == -1)
+    {
+        currentPlayerId = 1;
+    }
+    else
+    {
+        currentPlayerId = server->getOtherPlayers().at(currentPlayerIndex)->getId();
+    }
+    server->sendMessageToAllPlayers(MessageType::PlayerTurn, QString::number(currentPlayerId));
+    log(QString("Tura gracza Index: %1, ID: %2").arg(currentPlayerIndex).arg(currentPlayerId));
+    refreshTurnLabels();
+}
+
+void GameScreenWidget::refreshTurnLabels()
+{
+    if (currentPlayerIndex == -1)
+    {
+        ui->cardButton->setEnabled(true);
+        ui->labelCurrentPlayer->setStyleSheet("color: #99FFFF; font-weight: bold;");
+        ui->labelPlayer2->setStyleSheet("");
+        ui->labelPlayer3->setStyleSheet("");
+        ui->labelPlayer4->setStyleSheet("");
+    }
+    else
+    {
+        ui->cardButton->setEnabled(false);
+        ui->labelCurrentPlayer->setStyleSheet("");
+        ui->labelPlayer2->setStyleSheet("");
+        ui->labelPlayer3->setStyleSheet("");
+        ui->labelPlayer4->setStyleSheet("");
+        if (currentPlayerIndex == 0) ui->labelPlayer2->setStyleSheet("color: #99FFFF; font-weight: bold;");
+        if (currentPlayerIndex == 1) ui->labelPlayer3->setStyleSheet("color: #99FFFF; font-weight: bold;");
+        if (currentPlayerIndex == 2) ui->labelPlayer4->setStyleSheet("color: #99FFFF; font-weight: bold;");
     }
 }
