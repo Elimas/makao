@@ -35,6 +35,6 @@ Card SingleCardWidget::getCard() const
 void SingleCardWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-        emit cardClicked(getCard());
+        emit cardClicked(getCard(), this);
     }
 }

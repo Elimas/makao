@@ -23,7 +23,7 @@ public:
     void removeCard(int index);
 
 signals:
-    void cardClicked(const Card& card);
+    void cardClicked(const Card& card, int cardIndex);
 
 private:
     Ui::CardsWidget *ui;

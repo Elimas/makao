@@ -26,7 +26,7 @@ private:
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 signals:
-	void cardClicked(const Card& card);
+	void cardClicked(const Card& card, const SingleCardWidget* widget);
 };
 
 #endif // SINGLECARDWIDGET_H
