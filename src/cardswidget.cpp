@@ -39,5 +39,7 @@ void CardsWidget::addCard(const Card& card)
 
 void CardsWidget::removeCard(int index)
 {
+    SingleCardWidget* card = cardWidgets[index];
+    card->deleteLater();
     cardWidgets.removeAt(index);
 }

@@ -41,12 +41,15 @@ private slots:
 
     void on_cardButton_clicked();
 
+    void cardClicked(const Card& card, int cardIndex);
+
 private:
     Ui::GameScreenWidget *ui;
     void log(QString message);
     void startGame();
     void nextPlayerTurn();
     void refreshTurnLabels();
+    void setTableCard(Card& card);
 };
 
 #endif // GAMESCREENWIDGET_H

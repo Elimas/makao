@@ -30,6 +30,7 @@ public:
     QPointer<QTcpSocket> getSocket() const { return socket; }
     void addCard(Card card) { cards.append(card); cardsCount++; }
     void removeCard(int index) { cards.removeAt(index); cardsCount--; }
+    Card& cardAt(int index) { return cards[index]; }
 };
 
 #endif // PLAYER_H

@@ -74,10 +74,7 @@ GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *clie
             }
         }
     }
-    if (ui->TableCard != NULL) delete ui->TableCard;
-    ui->TableCard = new SingleCardWidget(table.topCard(), this);
-    ui->TableCard->move(ui->Game->rect().center() - ui->TableCard->rect().center());
-    ui->TableCard->show();
+    setTableCard(table.topCard());
     if (!isServer)
     {
         client->sendMessage(MessageType::Ready, "");
@@ -86,6 +83,8 @@ GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *clie
         ui->labelCurrentPlayer->setText(server->getHostPlayer()->getName());
     else
         ui->labelCurrentPlayer->setText(client->getPlayer()->getName());
+    connect(ui->CurrentPlayer, SIGNAL(cardClicked(const Card&, int)), this, SLOT(cardClicked(const Card&,int)));
+    ui->CurrentPlayer->setEnabled(false);
 }
 
 GameScreenWidget::~GameScreenWidget()
@@ -138,6 +137,28 @@ void GameScreenWidget::onServerDataReceived(Player* sender, int messageType, QSt
             nextPlayerTurn();
         }
     }
+    else if (messageType == MessageType::PlayCard)
+    {
+        if (currentPlayerId == sender->getId())
+        {
+            int index = message.toInt();
+            Card& card = sender->cardAt(index);
+            if (table.CanPlayCard(card))
+            {
+                table.PlayCard(card);
+                sender->removeCard(index);
+                setTableCard(table.topCard());
+                server->sendMessageToAllPlayers(MessageType::SetTableCard, table.topCard().serialize());
+                server->sendMessage(sender, MessageType::RemoveCard, QString::number(index));
+                server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(sender->getId()).arg(sender->cardsCount));
+                nextPlayerTurn();
+            }
+            else
+            {
+                server->sendMessage(sender, MessageType::CantPlayCard, QString::number(index));
+            }
+        }
+    }
 }
 //slots in client
 void GameScreenWidget::onClientDisconnected()
@@ -160,16 +181,19 @@ void GameScreenWidget::onClientDataReceived(int messageType, QString message)
     if (messageType == MessageType::SetTableCard)
     {
         QStringList a = message.split(";");
-        if (ui->TableCard != NULL) delete ui->TableCard;
-        ui->TableCard = new SingleCardWidget(Card(static_cast<Card::Suit>(a.value(0).toInt()), static_cast<Card::Pip>(a.value(1).toInt())), (QWidget*) this);
-        ui->TableCard->move(ui->Game->rect().center() - ui->TableCard->rect().center());
-        ui->TableCard->show();
+        setTableCard(Card(static_cast<Card::Suit>(a.value(0).toInt()), static_cast<Card::Pip>(a.value(1).toInt())));
     }
     else if (messageType == MessageType::AddCard)
     {
         Card c = Card::deserialize(message);
         client->getPlayer()->addCard(c);
         ui->CurrentPlayer->addCard(c);
+    }
+    else if (messageType == MessageType::RemoveCard)
+    {
+        int cardIndex = message.toInt();
+        client->getPlayer()->removeCard(cardIndex);
+        ui->CurrentPlayer->removeCard(cardIndex);
     }
     else if (messageType == MessageType::CardsNumber)
     {
@@ -210,6 +234,7 @@ void GameScreenWidget::onClientDataReceived(int messageType, QString message)
             //TODO ruch aktualnego gracza
             currentPlayerIndex = -1;
             currentPlayerId = client->getPlayer()->getId();
+            ui->CurrentPlayer->setEnabled(true);
         }
         else
         {
@@ -224,9 +249,19 @@ void GameScreenWidget::onClientDataReceived(int messageType, QString message)
                     break;
                 }
             }
+            ui->CurrentPlayer->setEnabled(false);
         }
         log(QString("ID: %1, Index: %2, playerId: %3").arg(currentPlayerId).arg(currentPlayerIndex).arg(playerId));
         refreshTurnLabels();
+    }
+    else if (messageType == MessageType::CantPlayCard)
+    {
+        QMessageBox msgBox;
+        QString msg = QString("Nie możesz teraz zagrać tą kartą.");
+        msgBox.setText(msg);
+        msgBox.setIcon(QMessageBox::Icon::Warning);
+        msgBox.exec();
+        ui->CurrentPlayer->setEnabled(true);
     }
 }
 
@@ -284,10 +319,12 @@ void GameScreenWidget::startGame()
     if (i == -1)
     {
         id = 1;
+        ui->CurrentPlayer->setEnabled(true);
     }
     else
     {
         id = server->getOtherPlayers().at(i)->getId();
+        ui->CurrentPlayer->setEnabled(false);
     }
     currentPlayerIndex = i;
     currentPlayerId = id;
@@ -334,10 +371,12 @@ void GameScreenWidget::nextPlayerTurn()
     if (currentPlayerIndex == -1)
     {
         currentPlayerId = 1;
+        ui->CurrentPlayer->setEnabled(true);
     }
     else
     {
         currentPlayerId = server->getOtherPlayers().at(currentPlayerIndex)->getId();
+        ui->CurrentPlayer->setEnabled(false);
     }
     server->sendMessageToAllPlayers(MessageType::PlayerTurn, QString::number(currentPlayerId));
     log(QString("Tura gracza Index: %1, ID: %2").arg(currentPlayerIndex).arg(currentPlayerId));
@@ -365,4 +404,44 @@ void GameScreenWidget::refreshTurnLabels()
         if (currentPlayerIndex == 1) ui->labelPlayer3->setStyleSheet("color: #99FFFF; font-weight: bold;");
         if (currentPlayerIndex == 2) ui->labelPlayer4->setStyleSheet("color: #99FFFF; font-weight: bold;");
     }
+}
+
+void GameScreenWidget::cardClicked(const Card &card, int cardIndex)
+{
+    if (isServer)
+    {
+        if (table.CanPlayCard(card))
+        {
+            ui->CurrentPlayer->setEnabled(false);
+            server->getHostPlayer()->removeCard(cardIndex);
+            ui->CurrentPlayer->removeCard(cardIndex);
+            table.PlayCard(card);
+            setTableCard(table.topCard());
+            server->sendMessageToAllPlayers(MessageType::SetTableCard, table.topCard().serialize());
+            server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->cardsCount));
+            nextPlayerTurn();
+        }
+        else
+        {
+            QMessageBox msgBox;
+            QString msg = QString("Nie możesz teraz zagrać tą kartą.");
+            msgBox.setText(msg);
+            msgBox.setIcon(QMessageBox::Icon::Warning);
+            msgBox.exec();
+        }
+    }
+    else
+    {
+        ui->CurrentPlayer->setEnabled(false);
+        client->sendMessage(MessageType::PlayCard, QString::number(cardIndex));
+    }
+}
+
+void GameScreenWidget::setTableCard(Card &card)
+{
+    if (ui->TableCard != NULL) delete ui->TableCard;
+    ui->TableCard = new SingleCardWidget(card, this);
+    ui->TableCard->move(ui->Game->rect().center() - ui->TableCard->rect().center());
+    ui->TableCard->setEnabled(false);
+    ui->TableCard->show();
 }
