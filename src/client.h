@@ -9,8 +9,9 @@ class Client : public QObject
 	Q_OBJECT
 
 private:
-	Player *player;
+    QPointer<Player> player;
     QList<Player*> otherPlayers;
+    bool connectedB;
 
 public:
     Client(QObject *parent, Player *player);

@@ -24,7 +24,8 @@ SOURCES += src/main.cpp\
     src/gamescreenwidget.cpp \
     src/server.cpp \
     src/table.cpp \
-    src/opponentcardswidget.cpp
+    src/opponentcardswidget.cpp \
+    src/utils.cpp
 
 HEADERS  += src/mainwindow.h \
     src/cardswidget.h \
@@ -38,7 +39,8 @@ HEADERS  += src/mainwindow.h \
     src/gamescreenwidget.h \
     src/server.h \
     src/table.h \
-    src/opponentcardswidget.h
+    src/opponentcardswidget.h \
+    src/utils.h
 
 FORMS    += src/mainwindow.ui \
     src/cardswidget.ui \

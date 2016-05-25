@@ -2,6 +2,7 @@
 #include "ui_lobbywidget.h"
 #include "messagetype.h"
 #include "gamescreenwidget.h"
+#include "utils.h"
 
 LobbyWidget::LobbyWidget(QWidget *parent) :
     QWidget(parent),
@@ -62,12 +63,10 @@ void LobbyWidget::startServer()
             log("Waiting for players to join");
             updatePlayersList();
         } else {
-            QMessageBox msgBox;
-            QString msg = QString("Failed binding TCP Socket on port %1").arg(port);
+            QString msg = QString("Nie udało się zabindować portu %1").arg(port);
             log(msg);
-            msgBox.setText(msg);
-            msgBox.setIcon(QMessageBox::Critical);
-            msgBox.exec();
+            Utils::showNotBlockingMessageBox(NULL, msg, msg, QMessageBox::Icon::Critical);
+            this->deleteLater();
         }
     } else qDebug() << "Error client config specified";
 }
@@ -146,11 +145,8 @@ void LobbyWidget::onClientConnected()
 void LobbyWidget::onClientDisconnected()
 {
     log("Disconnected from server");
-    QMessageBox msgBox;
     QString msg = QString("Utracono połączenie z hostem. Wracanie do menu.");
-    msgBox.setText(msg);
-    msgBox.setIcon(QMessageBox::Icon::Critical);
-    msgBox.exec();
+    Utils::showNotBlockingMessageBox(NULL, msg, msg, QMessageBox::Icon::Critical);
     this->deleteLater();
 }
 void LobbyWidget::onClientError(QAbstractSocket::SocketError socketError)
@@ -158,12 +154,10 @@ void LobbyWidget::onClientError(QAbstractSocket::SocketError socketError)
     log("Socket error");
     if (socketError == QTcpSocket::SocketError::ConnectionRefusedError)
     {
-        QMessageBox msgBox;
-        QString msg = QString("Connection to server refused");
+        QString msg = QString("Host odmówił połączenia.");
         log(msg);
-        msgBox.setText(msg);
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.exec();
+        Utils::showNotBlockingMessageBox(NULL, msg, msg, QMessageBox::Icon::Critical);
+        this->deleteLater();
     }
 }
 void LobbyWidget::onClientDataReceived(int messageType, QString message)

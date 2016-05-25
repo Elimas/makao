@@ -3,7 +3,7 @@
 #include <QDataStream>
 
 Client::Client(QObject *parent, Player *player) :
-    QObject(parent), player(player)
+    QObject(parent), player(player), connectedB (false)
 {
     connect(player->socket, SIGNAL(readyRead()), this, SLOT(readData()));
     connect(player->socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
@@ -14,7 +14,7 @@ Client::Client(QObject *parent, Player *player) :
 Client::~Client()
 {
     disconnectFromHost();
-    if (player != NULL) delete player;
+    if (player) player->deleteLater();
 }
 
 void Client::connectToHost(QString ip, quint16 port)
@@ -121,12 +121,14 @@ void Client::readData()
 
 void Client::connected()
 {
+    connectedB = true;
 	qDebug() << "Connected to server";
 	emit onConnected();
 }
 
 void Client::disconnected()
 {
+    connectedB = false;
 	qDebug() << "Disconnected from server";
 	emit onDisconnected();
 }
@@ -139,7 +141,7 @@ void Client::socketError(QAbstractSocket::SocketError socketError)
 
 void Client::disconnectFromHost()
 {
-    if (player->socket->state() != QTcpSocket::UnconnectedState)
+    if (connectedB && player->socket->state() != QTcpSocket::UnconnectedState)
     {
         player->socket->disconnectFromHost();
         player->socket->waitForDisconnected();

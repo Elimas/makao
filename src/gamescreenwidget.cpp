@@ -5,6 +5,7 @@
 #include <QDesktopWidget>
 #include "time.h"
 #include <QMessageBox>
+#include "utils.h"
 
 GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *client, bool isServer) :
     QWidget(parent), server(server), client(client), isServer(isServer), currentPlayerId(0), currentPlayerIndex(0),
@@ -97,11 +98,7 @@ GameScreenWidget::~GameScreenWidget()
 //slots in server
 void GameScreenWidget::onServerDisconnected(Player const * const player)
 {
-    QMessageBox msgBox;
-    QString msg = QString("Jeden z graczy się rozłączył przez co nie można kontynuować gry. Wracanie do menu.");
-    msgBox.setText(msg);
-    msgBox.setIcon(QMessageBox::Icon::Critical);
-    msgBox.exec();
+    Utils::showNotBlockingMessageBox(NULL, QString("Gracz się rozłączył"), QString("Jeden z graczy się rozłączył przez co nie można kontynuować gry. Wracanie do menu."), QMessageBox::Icon::Critical);
     this->deleteLater();
 }
 void GameScreenWidget::onServerAfterDisconnected()
@@ -163,11 +160,12 @@ void GameScreenWidget::onServerDataReceived(Player* sender, int messageType, QSt
 //slots in client
 void GameScreenWidget::onClientDisconnected()
 {
-    QMessageBox msgBox;
+    /*QMessageBox msgBox;
     QString msg = QString("Utracono połączenie z hostem. Wracanie do menu.");
     msgBox.setText(msg);
     msgBox.setIcon(QMessageBox::Icon::Critical);
-    msgBox.exec();
+    msgBox.exec();*/
+    Utils::showNotBlockingMessageBox(NULL, QString("Utracono połączenie"), QString("Utracono połączenie z hostem. Wracanie do menu."), QMessageBox::Icon::Critical);
     this->deleteLater();
 }
 void GameScreenWidget::onClientError(QAbstractSocket::SocketError socketError)
@@ -256,11 +254,7 @@ void GameScreenWidget::onClientDataReceived(int messageType, QString message)
     }
     else if (messageType == MessageType::CantPlayCard)
     {
-        QMessageBox msgBox;
-        QString msg = QString("Nie możesz teraz zagrać tą kartą.");
-        msgBox.setText(msg);
-        msgBox.setIcon(QMessageBox::Icon::Warning);
-        msgBox.exec();
+        Utils::showNotBlockingMessageBox(NULL, QString("Nie możesz teraz zagrać tą kartą."), QString("Nie możesz teraz zagrać tą kartą."), QMessageBox::Icon::Warning);
         ui->CurrentPlayer->setEnabled(true);
     }
 }
@@ -423,11 +417,7 @@ void GameScreenWidget::cardClicked(const Card &card, int cardIndex)
         }
         else
         {
-            QMessageBox msgBox;
-            QString msg = QString("Nie możesz teraz zagrać tą kartą.");
-            msgBox.setText(msg);
-            msgBox.setIcon(QMessageBox::Icon::Warning);
-            msgBox.exec();
+            Utils::showNotBlockingMessageBox(NULL, QString("Nie możesz teraz zagrać tą kartą."), QString("Nie możesz teraz zagrać tą kartą."), QMessageBox::Icon::Warning);
         }
     }
     else
