@@ -35,7 +35,7 @@ void OpponentCardsWidget::setOrientation(Orientation newOrientation)
 
 void OpponentCardsWidget::addCard()
 {
-    const int cardDistance = 30;
+    const int cardDistance = 15;
     QWidget* cardWidget = new QWidget(ui->cardsFrame);
     cardWidget->setStyleSheet("background-image: url(:/game/Grafiki/card_back.png);");
     cardWidget->resize(120, 171);

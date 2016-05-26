@@ -21,6 +21,8 @@ public:
 
     void addCard(const Card& card);
     void removeCard(int index);
+	void rearrangeCards();
+	static int calculateCardHorizontalPosition(int cardIndex);
 
 signals:
     void cardClicked(const Card& card, int cardIndex);
@@ -28,6 +30,7 @@ signals:
 private:
     Ui::CardsWidget *ui;
     QList<SingleCardWidget*> cardWidgets;
+
 };
 
 #endif // CARDSWIDGET_H
