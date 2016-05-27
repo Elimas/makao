@@ -2,7 +2,7 @@
 #include "time.h"
 #include <qdebug.h>
 
-Table::Table()
+Table::Table() : is4PlayedRecently(false)
 {
     srand(time(NULL));
     //wrzucamy na stol karte poczatkowa niefunkcyjna 5-10
@@ -22,9 +22,16 @@ bool Table::CanPlayCard(const Card& card) const
 	}
 
 	const Card& cardOnTop = tableCards.top();
+
+    //na 4 można dawać tylko 4, kto nie da czeka tyle kolejek ile było 4
+    if(is4PlayedRecently)
+    {
+        if (card.getPip() == Card::Pip::Card4) return true;
+        else return false;
+    }
 	
-	/* Wszystko na dame */
-	if(cardOnTop.getPip() == Card::Pip::Queen)
+    /* Dama na wszystko, Wszystko na dame */
+    if(cardOnTop.getPip() == Card::Pip::Queen || card.getPip() == Card::Pip::Queen)
 	{
 		return true;
 	}
@@ -55,6 +62,7 @@ void Table::PlayCard(const Card& card)
 	}
 
 	tableCards.push(card);
+    if (card.getPip() == Card::Pip::Card4) is4PlayedRecently = true;
 }
 
 void Table::PlayAce(const Card& aceCard, Card::Suit changedToSuit)
@@ -109,5 +117,7 @@ Card Table::topCard()
     return tableCards.top();
 }
 
-
-
+void Table::reset4Flag()
+{
+    is4PlayedRecently = false;
+}

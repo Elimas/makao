@@ -8,7 +8,7 @@
 #include "utils.h"
 
 GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *client, bool isServer) :
-    QWidget(parent), server(server), client(client), isServer(isServer), currentPlayerId(0), currentPlayerIndex(0),
+    QWidget(parent), server(server), client(client), isServer(isServer), currentPlayerId(0), currentPlayerIndex(0), waitTurns(0),
     ui(new Ui::GameScreenWidget)
 {
 	ui->setupUi(this);
@@ -127,10 +127,39 @@ void GameScreenWidget::onServerDataReceived(Player* sender, int messageType, QSt
     {
         if (currentPlayerId == sender->getId())
         {
-            Card c = table.getNewCard();
-            sender->addCard(c);
-            server->sendMessage(sender, MessageType::AddCard, c.serialize());
-            server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(sender->getId()).arg(sender->cardsCount));
+            if (waitTurns > 0)
+            {
+                sender->waitingTurns = waitTurns;
+                table.reset4Flag();
+                waitTurns = 0;
+                refreshCardButton();
+                server->sendMessageToAllPlayers(MessageType::ResetTurnWaitCounter, "");
+            }
+            else
+            {
+                Card c = table.getNewCard();
+                sender->addCard(c);
+                server->sendMessage(sender, MessageType::AddCard, c.serialize());
+                server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(sender->getId()).arg(sender->cardsCount));
+                int i = server->getOtherPlayers().indexOf(sender);
+                OpponentCardsWidget *o = NULL;
+                switch (i)
+                {
+                case 0:
+                    o = ui->Player2;
+                    break;
+                case 1:
+                    o = ui->Player3;
+                    break;
+                case 2:
+                    o = ui->Player4;
+                    break;
+                }
+                if (o != NULL)
+                {
+                    o->setCardsNumber(sender->cardsCount);
+                }
+            }
             nextPlayerTurn();
         }
     }
@@ -142,6 +171,12 @@ void GameScreenWidget::onServerDataReceived(Player* sender, int messageType, QSt
             Card& card = sender->cardAt(index);
             if (table.CanPlayCard(card))
             {
+                log(QString("Gracz %1 gra kartą %2 %3").arg(sender->getName()).arg(card.getSuitAsText()).arg(card.getPipAsText()));
+                if (card.getPip() == Card::Pip::Card4)
+                {
+                    waitTurns++;
+                    refreshCardButton();
+                }
                 table.PlayCard(card);
                 sender->removeCard(index);
                 setTableCard(table.topCard());
@@ -179,7 +214,13 @@ void GameScreenWidget::onClientDataReceived(int messageType, QString message)
     if (messageType == MessageType::SetTableCard)
     {
         QStringList a = message.split(";");
-        setTableCard(Card(static_cast<Card::Suit>(a.value(0).toInt()), static_cast<Card::Pip>(a.value(1).toInt())));
+        Card card = Card(static_cast<Card::Suit>(a.value(0).toInt()), static_cast<Card::Pip>(a.value(1).toInt()));
+        if (card.getPip() == Card::Pip::Card4)
+        {
+            waitTurns++;
+            refreshCardButton();
+        }
+        setTableCard(card);
     }
     else if (messageType == MessageType::AddCard)
     {
@@ -256,6 +297,11 @@ void GameScreenWidget::onClientDataReceived(int messageType, QString message)
     {
         Utils::showNotBlockingMessageBox(NULL, QString("Nie możesz teraz zagrać tą kartą."), QString("Nie możesz teraz zagrać tą kartą."), QMessageBox::Icon::Warning);
         ui->CurrentPlayer->setEnabled(true);
+    }
+    else if (messageType == MessageType::ResetTurnWaitCounter)
+    {
+        waitTurns = 0;
+        refreshCardButton();
     }
 }
 
@@ -345,15 +391,31 @@ void GameScreenWidget::on_cardButton_clicked()
 {
     if (isServer)
     {
-        Card c = table.getNewCard();
-        server->getHostPlayer()->addCard(c);
-        ui->CurrentPlayer->addCard(c);
-        server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->cardsCount));
+        if (waitTurns > 0)
+        {
+            server->getHostPlayer()->waitingTurns = waitTurns;
+            table.reset4Flag();
+            waitTurns = 0;
+            refreshCardButton();
+            server->sendMessageToAllPlayers(MessageType::ResetTurnWaitCounter, "");
+        }
+        else
+        {
+            Card c = table.getNewCard();
+            server->getHostPlayer()->addCard(c);
+            ui->CurrentPlayer->addCard(c);
+            server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->cardsCount));
+        }
         nextPlayerTurn();
     }
     else
     {
         client->sendMessage(MessageType::TakeNewCard, "");
+        if (waitTurns > 0)
+        {
+            waitTurns = 0;
+            refreshCardButton();
+        }
     }
 }
 
@@ -362,19 +424,31 @@ void GameScreenWidget::nextPlayerTurn()
     currentPlayerIndex++;
     if (currentPlayerIndex >= server->getOtherPlayers().size())
         currentPlayerIndex = -1;
+    Player* currentPlayer = NULL;
     if (currentPlayerIndex == -1)
     {
         currentPlayerId = 1;
         ui->CurrentPlayer->setEnabled(true);
+        currentPlayer = server->getHostPlayer();
     }
     else
     {
         currentPlayerId = server->getOtherPlayers().at(currentPlayerIndex)->getId();
         ui->CurrentPlayer->setEnabled(false);
+        currentPlayer = server->getOtherPlayers().at(currentPlayerIndex);
     }
-    server->sendMessageToAllPlayers(MessageType::PlayerTurn, QString::number(currentPlayerId));
-    log(QString("Tura gracza Index: %1, ID: %2").arg(currentPlayerIndex).arg(currentPlayerId));
-    refreshTurnLabels();
+    if (currentPlayer->waitingTurns > 0)
+    {
+        log(QString("Gracz %1 czeka teraz %2 turę").arg(currentPlayer->getName()).arg(currentPlayer->waitingTurns));
+        currentPlayer->waitingTurns--;
+        nextPlayerTurn();
+    }
+    else
+    {
+        server->sendMessageToAllPlayers(MessageType::PlayerTurn, QString::number(currentPlayerId));
+        log(QString("Tura gracza Index: %1, ID: %2, Nick: %3").arg(currentPlayerIndex).arg(currentPlayerId).arg(currentPlayer->getName()));
+        refreshTurnLabels();
+    }
 }
 
 void GameScreenWidget::refreshTurnLabels()
@@ -406,6 +480,11 @@ void GameScreenWidget::cardClicked(const Card &card, int cardIndex)
     {
         if (table.CanPlayCard(card))
         {
+            if (card.getPip() == Card::Pip::Card4)
+            {
+                waitTurns++;
+                refreshCardButton();
+            }
             ui->CurrentPlayer->setEnabled(false);
             server->getHostPlayer()->removeCard(cardIndex);
             ui->CurrentPlayer->removeCard(cardIndex);
@@ -434,4 +513,16 @@ void GameScreenWidget::setTableCard(Card &card)
     ui->TableCard->move(ui->Game->rect().center() - ui->TableCard->rect().center());
     ui->TableCard->setEnabled(false);
     ui->TableCard->show();
+}
+
+void GameScreenWidget::refreshCardButton()
+{
+    if (waitTurns > 0)
+    {
+        ui->cardButton->setText(QString("Czekaj %1 tur").arg(waitTurns));
+    }
+    else
+    {
+        ui->cardButton->setText(QString("Ciągnij kartę"));
+    }
 }

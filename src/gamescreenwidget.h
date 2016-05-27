@@ -22,6 +22,7 @@ private:
     bool isServer;
     int currentPlayerIndex;
     int currentPlayerId;
+    int waitTurns;
 
 public:
     explicit GameScreenWidget(QWidget *parent, Server *server, Client *client, bool isServer);
@@ -50,6 +51,7 @@ private:
     void nextPlayerTurn();
     void refreshTurnLabels();
     void setTableCard(Card& card);
+    void refreshCardButton();
 };
 
 #endif // GAMESCREENWIDGET_H

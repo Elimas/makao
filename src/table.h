@@ -13,12 +13,14 @@ public:
 	void PlayJack(const Card& jackCard, Card::Pip requestedPip);
     Card getNewCard();
     Card topCard();
+    void reset4Flag();
 
 private:
     std::deque<Card> cardsStack;
 	std::stack<Card> tableCards;
 	Card::Suit aceChangedSuit;
 	Card::Pip jackRequestedPip;
+    bool is4PlayedRecently;
 
 	bool CanPlayCardOnAce(const Card& card) const;
 	bool CanPlayCardOnJack(const Card& card) const;

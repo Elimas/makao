@@ -16,11 +16,12 @@ private:
     int id;
 	QString name;
     QPointer<QTcpSocket> socket;
+    std::vector<Card> cards;
 
 public:
     int cardsCount;
-    QList<Card> cards;
     bool ready;
+    int waitingTurns;
 
     Player(QObject *parent, QString name);
 	~Player();
@@ -28,8 +29,8 @@ public:
     void setId(int id) { this->id = id; }
     QString getName() const { return name; }
     QPointer<QTcpSocket> getSocket() const { return socket; }
-    void addCard(Card card) { cards.append(card); cardsCount++; }
-    void removeCard(int index) { cards.removeAt(index); cardsCount--; }
+    void addCard(Card card) { cards.push_back(card); cardsCount++; }
+    void removeCard(int index) { cards.erase(cards.begin()+index); cardsCount--; }
     Card& cardAt(int index) { return cards[index]; }
 };
 
