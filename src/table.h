@@ -21,10 +21,17 @@ private:
 	Card::Suit aceChangedSuit;
 	Card::Pip jackRequestedPip;
     bool is4PlayedRecently;
+    bool isWar;
+    int warCards;
 
 	bool CanPlayCardOnAce(const Card& card) const;
 	bool CanPlayCardOnJack(const Card& card) const;
     void generateRandomCards();
+
+public:
+    bool getIsWar() const { return isWar; }
+    int getWarCardsCount() const { return warCards; }
+    void resetWarFlag() { isWar = false; warCards = 0; }
 };
 
 #endif // GAME_H

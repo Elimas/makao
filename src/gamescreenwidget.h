@@ -49,6 +49,7 @@ private:
     void log(QString message);
     void startGame();
     void nextPlayerTurn();
+    void previousPlayerTurn();
     void refreshTurnLabels();
     void setTableCard(Card& card);
     void refreshCardButton();

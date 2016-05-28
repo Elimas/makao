@@ -2,7 +2,7 @@
 #include "time.h"
 #include <qdebug.h>
 
-Table::Table() : is4PlayedRecently(false)
+Table::Table() : is4PlayedRecently(false), isWar(false), warCards(0)
 {
     srand(time(NULL));
     //wrzucamy na stol karte poczatkowa niefunkcyjna 5-10
@@ -22,6 +22,28 @@ bool Table::CanPlayCard(const Card& card) const
 	}
 
 	const Card& cardOnTop = tableCards.top();
+
+    /* Wojna:
+     * Król Pik (Spades) - poprzedni gracz bierze 5 kart (jak gracz da dowolnego króla do wojna się kończy i karty zerują)
+     * Król Kier (Hearts) - następny gracz bierze 5 kart (jak gracz da dowolnego króla do wojna się kończy i karty zerują)
+     * 2 - dodaje 2 karty
+     * 3 - dodaje 3 karty
+     * Na 2 lub 3 można dać króla: Król Pik (Spades) lub Król Kier (Hearts) dodaje 5 dodatkowych kart.
+     * Na króla można dać tylko króla który kończy wojnę.
+     */
+    if (isWar)
+    {
+        if (cardOnTop.getPip() == Card::Pip::Card2 || cardOnTop.getPip() == Card::Pip::Card3)
+        {
+            if (card.getPip() == Card::Pip::Card2 || card.getPip() == Card::Pip::Card3 || card.getPip() == Card::Pip::King) return true;
+            else return false;
+        }
+        if (cardOnTop.getPip() == Card::Pip::King)
+        {
+            if (card.getPip() == Card::Pip::King) return true;
+            else return false;
+        }
+    }
 
     //na 4 można dawać tylko 4, kto nie da czeka tyle kolejek ile było 4
     if(is4PlayedRecently)
@@ -63,6 +85,23 @@ void Table::PlayCard(const Card& card)
 
 	tableCards.push(card);
     if (card.getPip() == Card::Pip::Card4) is4PlayedRecently = true;
+    if (card.getPip() == Card::Pip::Card2 || card.getPip() == Card::Pip::Card3 || card.getPip() == Card::Pip::King)
+    {
+        if (!isWar)
+        {
+            isWar = true;
+            if (card.getPip() == Card::Pip::Card2) warCards += 2;
+            else if (card.getPip() == Card::Pip::Card3) warCards += 3;
+            else if (card.getPip() == Card::Pip::King && (card.getSuit() == Card::Suit::Spade || card.getSuit() == Card::Suit::Heart)) warCards += 5;
+            qDebug() << "Początek wojny. Kart: " << warCards;
+        }
+        else
+        {
+            if (card.getPip() == Card::Pip::Card2) { warCards += 2; qDebug() << "Wojna l. kart: " << warCards; }
+            else if (card.getPip() == Card::Pip::Card3) { warCards += 3; qDebug() << "Wojna l. kart: " << warCards; }
+            else if (card.getPip() == Card::Pip::King) { warCards = 0; isWar = false; qDebug() << "Koniec wojny"; }
+        }
+    }
 }
 
 void Table::PlayAce(const Card& aceCard, Card::Suit changedToSuit)

@@ -137,9 +137,20 @@ void GameScreenWidget::onServerDataReceived(Player* sender, int messageType, QSt
             }
             else
             {
-                Card c = table.getNewCard();
-                sender->addCard(c);
-                server->sendMessage(sender, MessageType::AddCard, c.serialize());
+                int cardsCount = 1;
+                if (table.getIsWar())
+                {
+                    cardsCount = table.getWarCardsCount();
+                    table.resetWarFlag();
+                    log(QString("Gracz: %1 przegrał wojnę. Dostaje %2 kart").arg(sender->getName()).arg(cardsCount));
+                }
+
+                for (int i = 0; i < cardsCount; i++)
+                {
+                    Card c = table.getNewCard();
+                    sender->addCard(c);
+                    server->sendMessage(sender, MessageType::AddCard, c.serialize());
+                }
                 server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(sender->getId()).arg(sender->cardsCount));
                 int i = server->getOtherPlayers().indexOf(sender);
                 OpponentCardsWidget *o = NULL;
@@ -183,7 +194,8 @@ void GameScreenWidget::onServerDataReceived(Player* sender, int messageType, QSt
                 server->sendMessageToAllPlayers(MessageType::SetTableCard, table.topCard().serialize());
                 server->sendMessage(sender, MessageType::RemoveCard, QString::number(index));
                 server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(sender->getId()).arg(sender->cardsCount));
-                nextPlayerTurn();
+                if (card.getPip() != Card::Pip::King && card.getSuit() != Card::Suit::Spade) nextPlayerTurn();
+                else previousPlayerTurn();
             }
             else
             {
@@ -401,10 +413,20 @@ void GameScreenWidget::on_cardButton_clicked()
         }
         else
         {
-            Card c = table.getNewCard();
-            server->getHostPlayer()->addCard(c);
-            ui->CurrentPlayer->addCard(c);
-            server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->cardsCount));
+            int cardsCount = 1;
+            if (table.getIsWar())
+            {
+                cardsCount = table.getWarCardsCount();
+                table.resetWarFlag();
+                log(QString("Gracz: %1 przegrał wojnę. Dostaje %2 kart").arg(server->getHostPlayer()->getName()).arg(cardsCount));
+            }
+            for (int i = 0; i < cardsCount; i++)
+            {
+                Card c = table.getNewCard();
+                server->getHostPlayer()->addCard(c);
+                ui->CurrentPlayer->addCard(c);
+                server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->cardsCount));
+            }
         }
         nextPlayerTurn();
     }
@@ -442,6 +464,39 @@ void GameScreenWidget::nextPlayerTurn()
         log(QString("Gracz %1 czeka teraz %2 turę").arg(currentPlayer->getName()).arg(currentPlayer->waitingTurns));
         currentPlayer->waitingTurns--;
         nextPlayerTurn();
+    }
+    else
+    {
+        server->sendMessageToAllPlayers(MessageType::PlayerTurn, QString::number(currentPlayerId));
+        log(QString("Tura gracza Index: %1, ID: %2, Nick: %3").arg(currentPlayerIndex).arg(currentPlayerId).arg(currentPlayer->getName()));
+        refreshTurnLabels();
+    }
+}
+
+//używane jeśli jest karta: Król Pik (Spades)
+void GameScreenWidget::previousPlayerTurn()
+{
+    currentPlayerIndex--;
+    if (currentPlayerIndex < -1)
+        currentPlayerIndex = server->getOtherPlayers().size() - 1;
+    Player* currentPlayer = NULL;
+    if (currentPlayerIndex == -1)
+    {
+        currentPlayerId = 1;
+        ui->CurrentPlayer->setEnabled(true);
+        currentPlayer = server->getHostPlayer();
+    }
+    else
+    {
+        currentPlayerId = server->getOtherPlayers().at(currentPlayerIndex)->getId();
+        ui->CurrentPlayer->setEnabled(false);
+        currentPlayer = server->getOtherPlayers().at(currentPlayerIndex);
+    }
+    if (currentPlayer->waitingTurns > 0)
+    {
+        log(QString("Gracz %1 czeka teraz %2 turę").arg(currentPlayer->getName()).arg(currentPlayer->waitingTurns));
+        currentPlayer->waitingTurns--;
+        previousPlayerTurn();
     }
     else
     {
@@ -492,7 +547,8 @@ void GameScreenWidget::cardClicked(const Card &card, int cardIndex)
             setTableCard(table.topCard());
             server->sendMessageToAllPlayers(MessageType::SetTableCard, table.topCard().serialize());
             server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->cardsCount));
-            nextPlayerTurn();
+            if (card.getPip() != Card::Pip::King && card.getSuit() != Card::Suit::Spade) nextPlayerTurn();
+            else previousPlayerTurn();
         }
         else
         {
