@@ -3,12 +3,14 @@
 
 #include <QObject>
 #include <QMessageBox>
+#include <QPushButton>
 
 class Utils
 {
 public:
     Utils();
     static void showNotBlockingMessageBox(QWidget* parent, QString &title, QString &message, QMessageBox::Icon icon);
+    static int showJackSelectionMessageBox(QWidget* parent, QString &title, QString &message, QMessageBox::Icon icon);
 };
 
 #endif // UTILS_H

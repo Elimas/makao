@@ -540,6 +540,48 @@ void GameScreenWidget::cardClicked(const Card &card, int cardIndex)
                 waitTurns++;
                 refreshCardButton();
             }
+            if(card.getPip()==Card::Pip::Jack)
+            {
+                int a=Utils::showJackSelectionMessageBox(NULL, QString("Zagrałeś waleta"), QString("Wybierz żądanie:"), QMessageBox::Icon::Warning);
+                switch(a)
+                {
+                case 5:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card5);
+                    break;
+                }
+                case 6:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card6);
+                    break;
+                }
+                case 7:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card7);
+                    break;
+                }
+                case 8:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card8);
+                    break;
+                }
+                case 9:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card9);
+                    break;
+                }
+                case 10:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card10);
+                    break;
+                }
+                default:
+                {
+                    //table.setJackRequestedPip(Null);
+                    break;
+                }
+                }
+            }
             ui->CurrentPlayer->setEnabled(false);
             server->getHostPlayer()->removeCard(cardIndex);
             ui->CurrentPlayer->removeCard(cardIndex);
