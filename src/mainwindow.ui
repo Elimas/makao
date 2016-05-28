@@ -202,8 +202,8 @@ QLabel
     <widget class="QGraphicsView" name="gphIP">
      <property name="geometry">
       <rect>
-       <x>140</x>
-       <y>80</y>
+       <x>130</x>
+       <y>120</y>
        <width>171</width>
        <height>91</height>
       </rect>
@@ -219,7 +219,7 @@ QLabel
      <property name="geometry">
       <rect>
        <x>350</x>
-       <y>120</y>
+       <y>160</y>
        <width>181</width>
        <height>31</height>
       </rect>
@@ -261,32 +261,6 @@ QLabel
      </property>
      <property name="text">
       <string>Dołącz do gry</string>
-     </property>
-    </widget>
-    <widget class="QGraphicsView" name="gphport">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>160</y>
-       <width>201</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-image: url(:/tlo/menu/Grafiki/port.png);</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="txtport">
-     <property name="geometry">
-      <rect>
-       <x>350</x>
-       <y>190</y>
-       <width>181</width>
-       <height>31</height>
-      </rect>
      </property>
     </widget>
     <widget class="QPushButton" name="btnStworzGre">
