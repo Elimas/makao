@@ -25,7 +25,8 @@ SOURCES += src/main.cpp\
     src/server.cpp \
     src/table.cpp \
     src/opponentcardswidget.cpp \
-    src/utils.cpp
+    src/utils.cpp \
+    src/custombuttonsdialog.cpp
 
 HEADERS  += src/mainwindow.h \
     src/cardswidget.h \
@@ -40,14 +41,16 @@ HEADERS  += src/mainwindow.h \
     src/server.h \
     src/table.h \
     src/opponentcardswidget.h \
-    src/utils.h
+    src/utils.h \
+    src/custombuttonsdialog.h
 
 FORMS    += src/mainwindow.ui \
     src/cardswidget.ui \
     src/singlecardwidget.ui \
     src/lobbywidget.ui \
     src/gamescreenwidget.ui \
-    src/opponentcardswidget.ui
+    src/opponentcardswidget.ui \
+    src/custombuttonsdialog.ui
 
 RESOURCES += \
     tlomenu.qrc \

@@ -53,6 +53,8 @@ private:
     void refreshTurnLabels();
     void setTableCard(Card& card);
     void refreshCardButton();
+    void handleAce();
+	void handleAceSuitChangedOnServer(const QString& suitName);
 };
 
 #endif // GAMESCREENWIDGET_H

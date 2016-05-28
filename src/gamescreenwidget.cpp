@@ -6,6 +6,7 @@
 #include "time.h"
 #include <QMessageBox>
 #include "utils.h"
+#include "custombuttonsdialog.h"
 
 GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *client, bool isServer) :
     QWidget(parent), server(server), client(client), isServer(isServer), currentPlayerId(0), currentPlayerIndex(0), waitTurns(0),
@@ -203,6 +204,12 @@ void GameScreenWidget::onServerDataReceived(Player* sender, int messageType, QSt
             }
         }
     }
+	else if (messageType == MessageType::AceChangedSuit)
+	{
+		handleAceSuitChangedOnServer(message);
+		server->sendMessageToAllPlayers(MessageType::AceChangedSuit, message);
+		Utils::showNotBlockingMessageBox(nullptr, "Zagrano asem", "Zmieniono kolor na: " + message, QMessageBox::Icon::Information);
+	}
 }
 //slots in client
 void GameScreenWidget::onClientDisconnected()
@@ -315,6 +322,10 @@ void GameScreenWidget::onClientDataReceived(int messageType, QString message)
         waitTurns = 0;
         refreshCardButton();
     }
+	else if (messageType == MessageType::AceChangedSuit)
+	{
+		Utils::showNotBlockingMessageBox(nullptr, "Zagrano asem", "Zmieniono kolor na: " + message, QMessageBox::Icon::Information);
+	}
 }
 
 void GameScreenWidget::log(QString message)
@@ -531,6 +542,11 @@ void GameScreenWidget::refreshTurnLabels()
 
 void GameScreenWidget::cardClicked(const Card &card, int cardIndex)
 {
+    if(card.getPip() == Card::Pip::Ace)
+    {
+        handleAce();
+    }
+
     if (isServer)
     {
         if (table.CanPlayCard(card))
@@ -581,4 +597,51 @@ void GameScreenWidget::refreshCardButton()
     {
         ui->cardButton->setText(QString("Ciągnij kartę"));
     }
+}
+
+const QString heartText = "Kier";
+const QString diamondText = "Karo";
+const QString clubText = "Trefl";
+const QString spadeText = "Pik";
+
+void GameScreenWidget::handleAce()
+{
+    CustomButtonsDialog buttonsDialog;
+	buttonsDialog.setMessage("Na jaki kolor zmieniasz?");
+    
+    buttonsDialog.addButton(heartText);
+    buttonsDialog.addButton(diamondText);
+    buttonsDialog.addButton(clubText);
+    buttonsDialog.addButton(spadeText);
+    buttonsDialog.exec();
+
+	if(isServer)
+	{
+		handleAceSuitChangedOnServer(buttonsDialog.getSelectedButtonText());
+		server->sendMessageToAllPlayers(MessageType::AceChangedSuit, buttonsDialog.getSelectedButtonText());
+	}
+	else
+	{
+		client->sendMessage(MessageType::AceChangedSuit, buttonsDialog.getSelectedButtonText());
+	}
+}
+
+void GameScreenWidget::handleAceSuitChangedOnServer(const QString& suitName)
+{
+	if(suitName == heartText)
+	{
+		table.setAceChangedSuit(Card::Suit::Heart);
+	} 
+	else if(suitName == diamondText)
+	{
+		table.setAceChangedSuit(Card::Suit::Diamond);
+	}
+	else if (suitName == clubText)
+	{
+		table.setAceChangedSuit(Card::Suit::Club);
+	}
+	else if (suitName == spadeText)
+	{
+		table.setAceChangedSuit(Card::Suit::Spade);
+	}
 }

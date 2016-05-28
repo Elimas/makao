@@ -160,3 +160,8 @@ void Table::reset4Flag()
 {
     is4PlayedRecently = false;
 }
+
+void Table::setAceChangedSuit(Card::Suit suit)
+{
+	aceChangedSuit = suit;
+}
