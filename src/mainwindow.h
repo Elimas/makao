@@ -37,11 +37,6 @@ private slots:
     void joinGame(QString playerName, QString ip, int port);
 
     void hostGame(QString playerName, int port);
-
-    void on_pushButton_2_clicked();
-
-    void on_pushButton_clicked();
-
     void on_btnPowrot_clicked();
 
     void on_btnDolaczdoGry_clicked();

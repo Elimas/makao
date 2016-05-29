@@ -95,16 +95,6 @@ void MainWindow::joinGame(QString playerName, QString ip, int port)
     lobbyWidget->startClient();
 }
 
-void MainWindow::on_pushButton_2_clicked()
-{
-    hostGame("host", port);
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-    joinGame("client", "127.0.0.1", port);
-}
-
 void MainWindow::on_btnPowrot_clicked()
 {
     ui->btnDolacz->setVisible(true);

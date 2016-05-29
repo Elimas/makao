@@ -32,3 +32,6 @@ cd D:\Qt\5.6\msvc2015_64\bin
 windeployqt D:\(...)\build-makao-Desktop_Qt_5_6_0_MSVC2015_64bit-Debug\debug
 ```
 W celu testów gry należy uruchomić aplikację wielokrotnie (minimalna liczba graczy: 2, max: 4). W trakcie testów trzeba też wyłączyć zaporę systemu windows i inne zapory jeżeli są obecne.
+
+#### Screenshoot
+![Screenshoot](screen.png "Makao Screenshoot")
