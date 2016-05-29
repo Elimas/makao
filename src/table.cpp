@@ -53,7 +53,10 @@ bool Table::CanPlayCard(const Card& card) const
         if (card.getPip() == Card::Pip::Card4) return true;
         else return false;
     }
-	
+    if(isRequest)
+    {
+        return CanPlayCardOnJack(card);
+    }
     /* Dama na wszystko, Wszystko na dame */
     if(cardOnTop.getPip() == Card::Pip::Queen || card.getPip() == Card::Pip::Queen)
 	{
@@ -63,12 +66,7 @@ bool Table::CanPlayCard(const Card& card) const
 	if(cardOnTop.getPip() == Card::Pip::Ace)
 	{
 		return CanPlayCardOnAce(card);
-	}
-    /* Rozwiazanie zadania */
-	if(cardOnTop.getPip() == Card::Pip::Jack)
-	{
-		return CanPlayCardOnJack(card);
-	}
+    }
     /* Inny, legalny ruch */
 	if (cardOnTop.getSuit() == card.getSuit() || cardOnTop.getPip() == card.getPip())
 	{
@@ -104,10 +102,11 @@ void Table::PlayCard(const Card& card)
             else if (card.getPip() == Card::Pip::King) { warCards = 0; isWar = false; qDebug() << "Koniec wojny"; }
         }
     }
-    if(card.getPip() == Card::Pip::Jack)
+    if(isRequest&&card.getPip()==jackRequestedPip)
     {
-
+        isRequestFinal=true;
     }
+
 }
 
 void Table::PlayAce(const Card& aceCard, Card::Suit changedToSuit)
@@ -118,8 +117,7 @@ void Table::PlayAce(const Card& aceCard, Card::Suit changedToSuit)
 
 void Table::PlayJack(const Card& jackCard, Card::Pip requestedPip)
 {
-	jackRequestedPip = requestedPip;
-    isRequest=true;
+    jackRequestedPip = requestedPip;
 	PlayCard(jackCard);
 }
 
@@ -131,16 +129,14 @@ bool Table::CanPlayCardOnAce(const Card& card) const
 bool Table::CanPlayCardOnJack(const Card& card) const
 {
 	//TODO: walet zada od wszystkich graczy (trzeba zebrac karty od wszystkich)
-    //TODO: mozna nie zadac niczego
+
     //"Przyklepane" zadanie
     if(isRequestFinal)
     return jackRequestedPip == card.getPip();
+
     //Zadamy czegos
     else //if(jackRequestedPip!=NULL)
-	return jackRequestedPip == card.getPip() || card.getPip() == Card::Pip::Jack;
-//    //Nie zadamy niczego, tj. kladziemy waleta jako nieznaczaca karte
-//    else
-//    return cardOnTop.getSuit() == card.getSuit() || cardOnTop.getPip() == card.getPip();
+    return jackRequestedPip == card.getPip() || card.getPip() == Card::Pip::Jack;
 }
 
 //ściaga kartę ze stosu kart

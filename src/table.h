@@ -36,7 +36,8 @@ public:
     bool getIsRequestFinal() const {return isRequestFinal;}
     int getWarCardsCount() const { return warCards; }
     void resetWarFlag() { isWar = false; warCards = 0; }
-    void setJackRequestedPip(Card::Pip pip){jackRequestedPip=pip;}
+    void setJackRequestedPip(Card::Pip pip){jackRequestedPip=pip;isRequest=true;}
+    void resetRequest() {isRequest=false;isRequestFinal=false;}
 };
 
 #endif // GAME_H
