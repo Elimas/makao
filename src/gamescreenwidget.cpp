@@ -8,7 +8,7 @@
 #include "utils.h"
 
 GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *client, bool isServer) :
-    QWidget(parent), server(server), client(client), isServer(isServer), currentPlayerId(0), currentPlayerIndex(0), waitTurns(0),
+    QWidget(parent), server(server), client(client), isServer(isServer), currentPlayerId(0), currentPlayerIndex(0), waitTurns(0), rankingPosition(1),
     ui(new Ui::GameScreenWidget)
 {
 	ui->setupUi(this);
@@ -194,8 +194,80 @@ void GameScreenWidget::onServerDataReceived(Player* sender, int messageType, QSt
                 server->sendMessageToAllPlayers(MessageType::SetTableCard, table.topCard().serialize());
                 server->sendMessage(sender, MessageType::RemoveCard, QString::number(index));
                 server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(sender->getId()).arg(sender->cardsCount));
-                if (card.getPip() != Card::Pip::King && card.getSuit() != Card::Suit::Spade) nextPlayerTurn();
-                else previousPlayerTurn();
+                for (int i = 0; i < server->getOtherPlayers().size(); i++)
+                {
+                    Player* p = server->getOtherPlayers().at(i);
+                    if (sender->getId() == p->getId())
+                    {
+                        OpponentCardsWidget *o = NULL;
+                        switch (i)
+                        {
+                        case 0:
+                            o = ui->Player2;
+                            break;
+                        case 1:
+                            o = ui->Player3;
+                            break;
+                        case 2:
+                            o = ui->Player4;
+                            break;
+                        }
+                        if (o != NULL)
+                        {
+                            o->setCardsNumber(p->cardsCount);
+                        }
+                        break;
+                    }
+                }
+
+                if (sender->cardsCount == 0)
+                {
+                    sender->rankingPosition = rankingPosition;
+                    if (rankingPosition < server->getOtherPlayers().size() + 1)
+                    {
+                        server->sendMessageToAllPlayers(MessageType::PlayerWin, QString("%1;%2;%3").arg(sender->getId()).arg(sender->getName()).arg(rankingPosition));
+                        if (rankingPosition == server->getOtherPlayers().size())
+                        {
+                            //został jeden gracz
+                            if (server->getHostPlayer()->rankingPosition == 0)
+                            {
+                                rankingPosition++;
+                                server->getHostPlayer()->rankingPosition = rankingPosition;
+                                Utils::showNotBlockingMessageBox(NULL, QString("Koniec gry"), QString("Przegrałeś! Masz %1 miejsce na %2 graczy.").arg(rankingPosition).arg(server->getOtherPlayers().size() + 1), QMessageBox::Icon::Information);
+                                server->sendMessageToAllPlayers(MessageType::PlayerWin, QString("%1;%2;%3").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->getName()).arg(rankingPosition));
+                                ui->cardButton->setEnabled(false);
+                                ui->CurrentPlayer->setEnabled(false);
+                            }
+                            else
+                            {
+                                for (int i = 0; i < server->getOtherPlayers().size(); i++)
+                                {
+                                    Player* p = server->getOtherPlayers().at(i);
+                                    if (p->rankingPosition == 0)
+                                    {
+                                        p->rankingPosition = rankingPosition + 1;
+                                        server->sendMessageToAllPlayers(MessageType::PlayerWin, QString("%1;%2;%3").arg(p->getId()).arg(p->getName()).arg(p->rankingPosition));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        server->sendMessageToAllPlayers(MessageType::PlayerWin, QString("%1;%2;%3").arg(sender->getId()).arg(sender->getName()).arg(rankingPosition));
+                    }
+                    rankingPosition++;
+                    refreshRanking();
+                }
+
+                if (card.getPip() == Card::Pip::King && card.getSuit() == Card::Suit::Spade)
+                {
+                    previousPlayerTurn();
+                }
+                else
+                {
+                    nextPlayerTurn();
+                }
             }
             else
             {
@@ -315,6 +387,40 @@ void GameScreenWidget::onClientDataReceived(int messageType, QString message)
         waitTurns = 0;
         refreshCardButton();
     }
+    else if (messageType == MessageType::PlayerWin)
+    {
+        QStringList l = message.split(";");
+        int playerId = l.value(0).toInt();
+        QString playerName = l.value(1);
+        int playerRanking = l.value(2).toInt();
+        if (client->getPlayer()->getId() == playerId)
+        {
+            client->getPlayer()->rankingPosition = playerRanking;
+            if (playerRanking < client->getOtherPlayers().size() + 1)
+            {
+                Utils::showNotBlockingMessageBox(NULL, QString("Koniec gry"), QString("Gratulacje! Wygrałeś! Masz %1 miejsce na %2 graczy.").arg(playerRanking).arg(client->getOtherPlayers().size() + 1), QMessageBox::Icon::Information);
+            }
+            else
+            {
+                Utils::showNotBlockingMessageBox(NULL, QString("Koniec gry"), QString("Przegrałeś! Masz %1 miejsce na %2 graczy.").arg(playerRanking).arg(client->getOtherPlayers().size() + 1), QMessageBox::Icon::Information);
+            }
+            ui->cardButton->setEnabled(false);
+            ui->CurrentPlayer->setEnabled(false);
+        }
+        else
+        {
+            for (int i = 0; i < client->getOtherPlayers().size(); i++)
+            {
+                Player* p = client->getOtherPlayers().at(i);
+                if (p->getId() == playerId)
+                {
+                   p->rankingPosition = playerRanking;
+                   break;
+                }
+            }
+        }
+        refreshRanking();
+    }
 }
 
 void GameScreenWidget::log(QString message)
@@ -386,13 +492,38 @@ void GameScreenWidget::startGame()
 
 void GameScreenWidget::on_exitButton_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Czy chcesz zakończyć grę? Wszyscy gracze zostaną rozłączeni.");
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::No);
-    msgBox.setIcon(QMessageBox::Icon::Question);
-    int ret = msgBox.exec();
-    if (ret == QMessageBox::Yes)
+    bool allPlayersEnded = true;
+    if (isServer)
+    {
+        if (server->getHostPlayer()->rankingPosition == 0) allPlayersEnded = false;
+        for (int i = 0; i < server->getOtherPlayers().size(); i++)
+        {
+            if (server->getOtherPlayers().at(i)->rankingPosition == 0) allPlayersEnded = false;
+        }
+    }
+    else
+    {
+        if (client->getPlayer()->rankingPosition == 0) allPlayersEnded = false;
+        for (int i = 0; i < client->getOtherPlayers().size(); i++)
+        {
+            if (client->getOtherPlayers().at(i)->rankingPosition == 0) allPlayersEnded = false;
+        }
+    }
+    if (!allPlayersEnded)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Czy chcesz zakończyć grę? Wszyscy gracze zostaną rozłączeni.");
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        msgBox.setIcon(QMessageBox::Icon::Question);
+        int ret = msgBox.exec();
+        if (ret == QMessageBox::Yes)
+        {
+            this->hide();
+            this->deleteLater();
+        }
+    }
+    else
     {
         this->hide();
         this->deleteLater();
@@ -443,74 +574,103 @@ void GameScreenWidget::on_cardButton_clicked()
 
 void GameScreenWidget::nextPlayerTurn()
 {
-    currentPlayerIndex++;
-    if (currentPlayerIndex >= server->getOtherPlayers().size())
-        currentPlayerIndex = -1;
-    Player* currentPlayer = NULL;
-    if (currentPlayerIndex == -1)
+    log("[DEBUG] nextPlayerTurn()");
+    log("[DEBUG] other players size: " + QString::number(server->getOtherPlayers().size()));
+    if (rankingPosition < server->getOtherPlayers().size() + 1)
     {
-        currentPlayerId = 1;
-        ui->CurrentPlayer->setEnabled(true);
-        currentPlayer = server->getHostPlayer();
-    }
-    else
-    {
-        currentPlayerId = server->getOtherPlayers().at(currentPlayerIndex)->getId();
-        ui->CurrentPlayer->setEnabled(false);
-        currentPlayer = server->getOtherPlayers().at(currentPlayerIndex);
-    }
-    if (currentPlayer->waitingTurns > 0)
-    {
-        log(QString("Gracz %1 czeka teraz %2 turę").arg(currentPlayer->getName()).arg(currentPlayer->waitingTurns));
-        currentPlayer->waitingTurns--;
-        nextPlayerTurn();
-    }
-    else
-    {
-        server->sendMessageToAllPlayers(MessageType::PlayerTurn, QString::number(currentPlayerId));
-        log(QString("Tura gracza Index: %1, ID: %2, Nick: %3").arg(currentPlayerIndex).arg(currentPlayerId).arg(currentPlayer->getName()));
-        refreshTurnLabels();
+        currentPlayerIndex++;
+        if (currentPlayerIndex >= server->getOtherPlayers().size())
+            currentPlayerIndex = -1;
+        Player* currentPlayer = NULL;
+        if (currentPlayerIndex == -1)
+        {
+            currentPlayerId = 1;
+            ui->CurrentPlayer->setEnabled(true);
+            currentPlayer = server->getHostPlayer();
+        }
+        else
+        {
+            currentPlayerId = server->getOtherPlayers().at(currentPlayerIndex)->getId();
+            ui->CurrentPlayer->setEnabled(false);
+            currentPlayer = server->getOtherPlayers().at(currentPlayerIndex);
+        }
+        if (currentPlayer->rankingPosition > 0)
+        {
+            ui->CurrentPlayer->setEnabled(false);
+            nextPlayerTurn();
+        }
+        if (currentPlayer->waitingTurns > 0)
+        {
+            log(QString("Gracz %1 czeka teraz %2 turę").arg(currentPlayer->getName()).arg(currentPlayer->waitingTurns));
+            currentPlayer->waitingTurns--;
+            nextPlayerTurn();
+        }
+        else
+        {
+            server->sendMessageToAllPlayers(MessageType::PlayerTurn, QString::number(currentPlayerId));
+            log(QString("Tura gracza Index: %1, ID: %2, Nick: %3").arg(currentPlayerIndex).arg(currentPlayerId).arg(currentPlayer->getName()));
+            refreshTurnLabels();
+        }
     }
 }
 
 //używane jeśli jest karta: Król Pik (Spades)
 void GameScreenWidget::previousPlayerTurn()
 {
-    currentPlayerIndex--;
-    if (currentPlayerIndex < -1)
-        currentPlayerIndex = server->getOtherPlayers().size() - 1;
-    Player* currentPlayer = NULL;
-    if (currentPlayerIndex == -1)
+    if (rankingPosition < server->getOtherPlayers().size() + 1)
     {
-        currentPlayerId = 1;
-        ui->CurrentPlayer->setEnabled(true);
-        currentPlayer = server->getHostPlayer();
-    }
-    else
-    {
-        currentPlayerId = server->getOtherPlayers().at(currentPlayerIndex)->getId();
-        ui->CurrentPlayer->setEnabled(false);
-        currentPlayer = server->getOtherPlayers().at(currentPlayerIndex);
-    }
-    if (currentPlayer->waitingTurns > 0)
-    {
-        log(QString("Gracz %1 czeka teraz %2 turę").arg(currentPlayer->getName()).arg(currentPlayer->waitingTurns));
-        currentPlayer->waitingTurns--;
-        previousPlayerTurn();
-    }
-    else
-    {
-        server->sendMessageToAllPlayers(MessageType::PlayerTurn, QString::number(currentPlayerId));
-        log(QString("Tura gracza Index: %1, ID: %2, Nick: %3").arg(currentPlayerIndex).arg(currentPlayerId).arg(currentPlayer->getName()));
-        refreshTurnLabels();
+        currentPlayerIndex--;
+        if (currentPlayerIndex < -1)
+            currentPlayerIndex = server->getOtherPlayers().size() - 1;
+        Player* currentPlayer = NULL;
+        if (currentPlayerIndex == -1)
+        {
+            currentPlayerId = 1;
+            ui->CurrentPlayer->setEnabled(true);
+            currentPlayer = server->getHostPlayer();
+        }
+        else
+        {
+            currentPlayerId = server->getOtherPlayers().at(currentPlayerIndex)->getId();
+            ui->CurrentPlayer->setEnabled(false);
+            currentPlayer = server->getOtherPlayers().at(currentPlayerIndex);
+        }
+        if (currentPlayer->rankingPosition > 0)
+        {
+            ui->CurrentPlayer->setEnabled(false);
+            previousPlayerTurn();
+        }
+        if (currentPlayer->waitingTurns > 0)
+        {
+            log(QString("Gracz %1 czeka teraz %2 turę").arg(currentPlayer->getName()).arg(currentPlayer->waitingTurns));
+            currentPlayer->waitingTurns--;
+            previousPlayerTurn();
+        }
+        else
+        {
+            server->sendMessageToAllPlayers(MessageType::PlayerTurn, QString::number(currentPlayerId));
+            log(QString("Tura gracza Index: %1, ID: %2, Nick: %3").arg(currentPlayerIndex).arg(currentPlayerId).arg(currentPlayer->getName()));
+            refreshTurnLabels();
+        }
     }
 }
 
 void GameScreenWidget::refreshTurnLabels()
 {
+    Player* currentPlayer = NULL;
+    if (isServer)
+    {
+        if (currentPlayerIndex == -1) currentPlayer = server->getHostPlayer();
+        else currentPlayer = server->getOtherPlayers().at(currentPlayerIndex);
+    }
+    else
+    {
+        if (currentPlayerIndex == -1) currentPlayer = client->getPlayer();
+        else currentPlayer = client->getOtherPlayers().at(currentPlayerIndex);
+    }
     if (currentPlayerIndex == -1)
     {
-        ui->cardButton->setEnabled(true);
+        if (currentPlayer->rankingPosition == 0) ui->cardButton->setEnabled(true);
         ui->labelCurrentPlayer->setStyleSheet("color: #99FFFF; font-weight: bold;");
         ui->labelPlayer2->setStyleSheet("");
         ui->labelPlayer3->setStyleSheet("");
@@ -535,20 +695,61 @@ void GameScreenWidget::cardClicked(const Card &card, int cardIndex)
     {
         if (table.CanPlayCard(card))
         {
+            ui->CurrentPlayer->setEnabled(false);
             if (card.getPip() == Card::Pip::Card4)
             {
                 waitTurns++;
                 refreshCardButton();
             }
-            ui->CurrentPlayer->setEnabled(false);
             server->getHostPlayer()->removeCard(cardIndex);
             ui->CurrentPlayer->removeCard(cardIndex);
             table.PlayCard(card);
             setTableCard(table.topCard());
             server->sendMessageToAllPlayers(MessageType::SetTableCard, table.topCard().serialize());
             server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->cardsCount));
-            if (card.getPip() != Card::Pip::King && card.getSuit() != Card::Suit::Spade) nextPlayerTurn();
-            else previousPlayerTurn();
+            if (server->getHostPlayer()->cardsCount == 0)
+            {
+                QString rankingStr =  QString(" ( miejsce %1)").arg(rankingPosition);
+                ui->labelCurrentPlayer->setText(server->getHostPlayer()->getName() + rankingStr);
+                server->getHostPlayer()->rankingPosition = rankingPosition;
+                if (rankingPosition < server->getOtherPlayers().size() + 1)
+                {
+                    Utils::showNotBlockingMessageBox(NULL, QString("Koniec gry"), QString("Gratulacje! Wygrałeś! Masz %1 miejsce na %2 graczy.").arg(rankingPosition).arg(server->getOtherPlayers().size() + 1), QMessageBox::Icon::Information);
+                    server->sendMessageToAllPlayers(MessageType::PlayerWin, QString("%1;%2;%3").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->getName()).arg(rankingPosition));
+                    if (rankingPosition == server->getOtherPlayers().size())
+                    {
+                        //został jeden gracz
+                        for (int i = 0; i < server->getOtherPlayers().size(); i++)
+                        {
+                            Player* p = server->getOtherPlayers().at(i);
+                            if (p->rankingPosition == 0)
+                            {
+                                rankingPosition++;
+                                p->rankingPosition = rankingPosition;
+                                server->sendMessageToAllPlayers(MessageType::PlayerWin, QString("%1;%2;%3").arg(p->getId()).arg(p->getName()).arg(p->rankingPosition));
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Utils::showNotBlockingMessageBox(NULL, QString("Koniec gry"), QString("Przegrałeś! Masz %1 miejsce na %2 graczy.").arg(rankingPosition).arg(server->getOtherPlayers().size() + 1), QMessageBox::Icon::Information);
+                    server->sendMessageToAllPlayers(MessageType::PlayerWin, QString("%1;%2;%3").arg(server->getHostPlayer()->getId()).arg(server->getHostPlayer()->getName()).arg(rankingPosition));
+                }
+                rankingPosition++;
+                refreshRanking();
+                ui->cardButton->setEnabled(false);
+                ui->CurrentPlayer->setEnabled(false);
+            }
+            if (card.getPip() == Card::Pip::King && card.getSuit() == Card::Suit::Spade)
+            {
+                previousPlayerTurn();
+            }
+            else
+            {
+                nextPlayerTurn();
+            }
         }
         else
         {
@@ -580,5 +781,48 @@ void GameScreenWidget::refreshCardButton()
     else
     {
         ui->cardButton->setText(QString("Ciągnij kartę"));
+    }
+}
+
+void GameScreenWidget::refreshRanking()
+{
+    Player* currentPlayer = NULL;
+    QList<Player*>* players;
+    if (isServer)
+    {
+        currentPlayer = server->getHostPlayer();
+        players = server->getOtherPlayersPtr();
+    }
+    else
+    {
+        currentPlayer = client->getPlayer();
+        players = client->getOtherPlayersPtr();
+    }
+
+    if (currentPlayer->rankingPosition > 0)
+    {
+        QString str = QString(" (miejsce %1)").arg(currentPlayer->rankingPosition);
+        ui->labelCurrentPlayer->setText(currentPlayer->getName() + str);
+    }
+    for (int i = 0; i < players->size(); i++)
+    {
+        Player* p = players->at(i);
+        log(QString("PlayerId: %1, Ranking: %2").arg(p->getId()).arg(p->rankingPosition));
+        if (p->rankingPosition > 0)
+        {
+            QString str = QString(" (miejsce %1)").arg(p->rankingPosition);
+            switch(i)
+            {
+            case 0:
+               ui->labelPlayer2->setText(p->getName() + str);
+               break;
+            case 1:
+               ui->labelPlayer3->setText(p->getName() + str);
+               break;
+            case 2:
+               ui->labelPlayer4->setText(p->getName() + str);
+               break;
+            }
+        }
     }
 }

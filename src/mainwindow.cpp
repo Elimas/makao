@@ -89,12 +89,12 @@ void MainWindow::joinGame(QString playerName, QString ip, int port)
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    hostGame("hostPlayer", port);
+    hostGame("host", port);
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-    joinGame("clientPlayer", "127.0.0.1", port);
+    joinGame("client", "127.0.0.1", port);
 }
 
 void MainWindow::on_btnPowrot_clicked()

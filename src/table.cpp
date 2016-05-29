@@ -89,11 +89,14 @@ void Table::PlayCard(const Card& card)
     {
         if (!isWar)
         {
-            isWar = true;
-            if (card.getPip() == Card::Pip::Card2) warCards += 2;
-            else if (card.getPip() == Card::Pip::Card3) warCards += 3;
-            else if (card.getPip() == Card::Pip::King && (card.getSuit() == Card::Suit::Spade || card.getSuit() == Card::Suit::Heart)) warCards += 5;
-            qDebug() << "Początek wojny. Kart: " << warCards;
+            if (card.getPip() == Card::Pip::Card2 || card.getPip() == Card::Pip::Card3 || (card.getPip() == Card::Pip::King && (card.getSuit() == Card::Suit::Spade || card.getSuit() == Card::Suit::Heart)))
+            {
+                isWar = true;
+                if (card.getPip() == Card::Pip::Card2) warCards += 2;
+                else if (card.getPip() == Card::Pip::Card3) warCards += 3;
+                else if (card.getPip() == Card::Pip::King && (card.getSuit() == Card::Suit::Spade || card.getSuit() == Card::Suit::Heart)) warCards += 5;
+                qDebug() << "Początek wojny. Kart: " << warCards;
+            }
         }
         else
         {

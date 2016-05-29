@@ -23,6 +23,7 @@ public:
 	const QTcpSocket* getSocket() const { return player->socket; }
     Player* getPlayer() const { return player; }
     QList<Player*> getOtherPlayers() { return otherPlayers; }
+    QList<Player*>* getOtherPlayersPtr() { return &otherPlayers; }
 
 signals:
 	void onConnected();

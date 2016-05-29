@@ -21,6 +21,7 @@ public:
 	~Server();
     Player* getHostPlayer() const { return hostPlayer; }
     QList<Player*> getOtherPlayers() { return otherPlayers; }
+    QList<Player*>* getOtherPlayersPtr() { return &otherPlayers; }
 	void sendMessage(Player const * const player, int messageType, QString message);
 	void sendMessage(QTcpSocket* socket, int messageType, QString message);
 	void sendMessageToAllPlayers(int messageType, QString message);

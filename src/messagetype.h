@@ -20,7 +20,8 @@ public:
         CardsNumber = 14, //[S] ilość kart które ma dany gracz: PLAYER_ID;ILOSC_KART
         Ready = 15, //[C] wysyła gracz po załadowaniu ekranu gry
         CantPlayCard = 16, //[S] wysyła server gdy klient nie może zagrać wybranej karty: NR_KARTY
-        ResetTurnWaitCounter = 17; //[S] wysyła gdy ktoś czeka na kartach 4, powoduje reset licznika czkeania u klientów
+        ResetTurnWaitCounter = 17, //[S] wysyła gdy ktoś czeka na kartach 4, powoduje reset licznika czkeania u klientów
+        PlayerWin = 18; //[S] wysyła do wszystkich klientów gdy jakiś gracz wygrał grę: PLAYER_ID;PLAYER_NAME;RANKING_POSITION
 };
 
 #endif // MESSAGETYPE_H

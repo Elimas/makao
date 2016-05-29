@@ -22,6 +22,7 @@ public:
     int cardsCount;
     bool ready;
     int waitingTurns;
+    int rankingPosition;
 
     Player(QObject *parent, QString name);
 	~Player();
