@@ -1,0 +1,3 @@
+<map id="QTcpServer" name="QTcpServer">
+<area shape="rect" id="node2" href="$class_server.html" title="{Server\n|+ allowConnecting\l|+ Server()\l+ ~Server()\l+ getHostPlayer()\l+ getOtherPlayers()\l+ sendMessage()\l+ sendMessage()\l+ sendMessageToAllPlayers()\l+ shutdown()\l# incomingConnection()\l}" alt="" coords="5,131,201,325"/>
+</map>

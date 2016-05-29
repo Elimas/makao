@@ -1,0 +1,4 @@
+<map id="SingleCardWidget::cardClicked" name="SingleCardWidget::cardClicked">
+<area shape="rect" id="node2" href="$class_cards_widget.html#a8a1bcb522816f503f4f85ca595e52862" title="CardsWidget::addCard" alt="" coords="269,5,422,32"/>
+<area shape="rect" id="node3" href="$class_single_card_widget.html#afff91ec0fae5e09ea5573560fa8e2b7e" title="SingleCardWidget::getCard" alt="" coords="256,56,435,83"/>
+</map>

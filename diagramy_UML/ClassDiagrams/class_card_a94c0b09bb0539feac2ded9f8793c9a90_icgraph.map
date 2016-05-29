@@ -1,0 +1,5 @@
+<map id="Card::Card" name="Card::Card">
+<area shape="rect" id="node2" href="$class_card.html#a2b59f800c67c63f7124c9413656cb486" title="Card::deserialize" alt="" coords="137,31,256,57"/>
+<area shape="rect" id="node3" href="$class_card.html#a70dcf7f6ca004e349ca7d2f5a0f7e4c6" title="Card::serialize" alt="" coords="304,5,409,32"/>
+<area shape="rect" id="node4" href="$class_game_screen_widget.html#a1b1827c8f2febbc009211992ebf0c5fd" title="GameScreenWidget::\l~GameScreenWidget" alt="" coords="457,23,604,65"/>
+</map>

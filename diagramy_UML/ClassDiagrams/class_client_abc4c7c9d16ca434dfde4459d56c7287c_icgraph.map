@@ -1,0 +1,6 @@
+<map id="Client::onDataReceived" name="Client::onDataReceived">
+<area shape="rect" id="node2" href="$class_client.html#a70a5051ab91b7ea189e81e0aac7b1d2d" title="Client::sendMessage" alt="" coords="216,5,360,32"/>
+<area shape="rect" id="node5" href="$class_client.html#a86d8ddaa45f15810a94678c10cfaf87e" title="Client::getOtherPlayers" alt="" coords="209,56,367,83"/>
+<area shape="rect" id="node3" href="$class_game_screen_widget.html#ad8a182835097b1b27e5bdf2d01a950a4" title="GameScreenWidget::GameScreen\lWidget" alt="" coords="415,23,637,65"/>
+<area shape="rect" id="node4" href="$class_lobby_widget.html#a19290407497acc0d164d69e07f3c9115" title="LobbyWidget::startClient" alt="" coords="685,31,851,57"/>
+</map>

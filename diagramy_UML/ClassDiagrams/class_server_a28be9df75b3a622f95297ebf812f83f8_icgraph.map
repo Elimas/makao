@@ -1,0 +1,6 @@
+<map id="Server::shutdown" name="Server::shutdown">
+<area shape="rect" id="node2" href="$class_server.html#a4b3aa2579cb1c8cd1d069582c14d0fa6" title="Server::~Server" alt="" coords="199,5,310,32"/>
+<area shape="rect" id="node3" href="$class_server.html#a0992574354bcc50cee584c3f6eb007bb" title="Server::getOtherPlayers" alt="" coords="175,56,335,83"/>
+<area shape="rect" id="node4" href="$class_game_screen_widget.html#ad8a182835097b1b27e5bdf2d01a950a4" title="GameScreenWidget::GameScreen\lWidget" alt="" coords="383,49,605,90"/>
+<area shape="rect" id="node5" href="$class_lobby_widget.html#a19290407497acc0d164d69e07f3c9115" title="LobbyWidget::startClient" alt="" coords="653,56,819,83"/>
+</map>

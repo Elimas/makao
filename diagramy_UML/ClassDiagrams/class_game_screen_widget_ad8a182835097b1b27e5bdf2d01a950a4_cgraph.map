@@ -1,0 +1,13 @@
+<map id="GameScreenWidget::GameScreenWidget" name="GameScreenWidget::GameScreenWidget">
+<area shape="rect" id="node2" href="$class_server.html#aebd35398f3b5b7346c17588007680d68" title="Server::getHostPlayer" alt="" coords="282,5,430,32"/>
+<area shape="rect" id="node3" href="$class_player.html#a3ecb2fd74c6dd0642728a78773115129" title="Player::getName" alt="" coords="297,56,415,83"/>
+<area shape="rect" id="node4" href="$class_server.html#a0992574354bcc50cee584c3f6eb007bb" title="Server::getOtherPlayers" alt="" coords="276,107,436,133"/>
+<area shape="rect" id="node9" href="$class_client.html#a86d8ddaa45f15810a94678c10cfaf87e" title="Client::getOtherPlayers" alt="" coords="277,157,435,184"/>
+<area shape="rect" id="node10" href="$class_client.html#a6ca3b7c26d5165046759de16573c5e6d" title="Client::getPlayer" alt="" coords="297,208,415,235"/>
+<area shape="rect" id="node11" href="$class_client.html#a70a5051ab91b7ea189e81e0aac7b1d2d" title="Client::sendMessage" alt="" coords="284,259,428,285"/>
+<area shape="rect" id="node12" href="$class_table.html#a3717bcf9fd51c262d91836877df76d88" title="Table::topCard" alt="" coords="303,309,409,336"/>
+<area shape="rect" id="node5" href="$class_server.html#aae6e488d8f462015c8b2f2169bb9167e" title="Server::sendMessage" alt="" coords="939,99,1085,125"/>
+<area shape="rect" id="node6" href="$class_server.html#a3f2380485c0d314fcef64fca534a33c1" title="Server::sendMessageToAll\lPlayers" alt="" coords="715,91,891,133"/>
+<area shape="rect" id="node7" href="$class_server.html#a28be9df75b3a622f95297ebf812f83f8" title="Server::shutdown" alt="" coords="515,132,636,159"/>
+<area shape="rect" id="node8" href="$class_server.html#a8afda81bd2b56f903fef92820a712677" title="Server::incomingConnection" alt="" coords="484,183,667,209"/>
+</map>

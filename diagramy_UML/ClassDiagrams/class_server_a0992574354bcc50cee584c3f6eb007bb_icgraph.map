@@ -1,0 +1,4 @@
+<map id="Server::getOtherPlayers" name="Server::getOtherPlayers">
+<area shape="rect" id="node2" href="$class_game_screen_widget.html#ad8a182835097b1b27e5bdf2d01a950a4" title="GameScreenWidget::GameScreen\lWidget" alt="" coords="213,5,436,47"/>
+<area shape="rect" id="node3" href="$class_lobby_widget.html#a19290407497acc0d164d69e07f3c9115" title="LobbyWidget::startClient" alt="" coords="484,13,649,39"/>
+</map>

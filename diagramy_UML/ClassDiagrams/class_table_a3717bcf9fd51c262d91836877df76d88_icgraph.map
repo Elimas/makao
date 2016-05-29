@@ -1,0 +1,5 @@
+<map id="Table::topCard" name="Table::topCard">
+<area shape="rect" id="node2" href="$class_game_screen_widget.html#ad8a182835097b1b27e5bdf2d01a950a4" title="GameScreenWidget::GameScreen\lWidget" alt="" coords="160,5,383,47"/>
+<area shape="rect" id="node4" href="$class_game_screen_widget.html#a1b1827c8f2febbc009211992ebf0c5fd" title="GameScreenWidget::\l~GameScreenWidget" alt="" coords="198,71,345,112"/>
+<area shape="rect" id="node3" href="$class_lobby_widget.html#a19290407497acc0d164d69e07f3c9115" title="LobbyWidget::startClient" alt="" coords="431,13,596,39"/>
+</map>
