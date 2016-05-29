@@ -21,7 +21,8 @@ public:
         Ready = 15, //[C] wysyła gracz po załadowaniu ekranu gry
         CantPlayCard = 16, //[S] wysyła server gdy klient nie może zagrać wybranej karty: NR_KARTY
         ResetTurnWaitCounter = 17, //[S] wysyła gdy ktoś czeka na kartach 4, powoduje reset licznika czkeania u klientów
-        RequestedCard = 18; //[C] wysyła gracz po zażądaniu waletem
+
+        RequestedCard = 19; //[C] wysyła gracz po zażądaniu waletem
 };
 
 #endif // MESSAGETYPE_H
