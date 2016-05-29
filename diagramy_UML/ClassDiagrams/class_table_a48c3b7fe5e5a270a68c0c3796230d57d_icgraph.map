@@ -1,0 +1,5 @@
+<map id="Table::PlayCard" name="Table::PlayCard">
+<area shape="rect" id="node2" href="$class_game_screen_widget.html#a1b1827c8f2febbc009211992ebf0c5fd" title="GameScreenWidget::\l~GameScreenWidget" alt="" coords="168,5,315,47"/>
+<area shape="rect" id="node3" href="$class_table.html#aeaaf4bd6696359e73acf8b4dacf9a68e" title="Table::PlayAce" alt="" coords="186,71,297,98"/>
+<area shape="rect" id="node4" href="$class_table.html#a2834b79a4c3eb776a6a5c31afdac700c" title="Table::PlayJack" alt="" coords="184,122,299,149"/>
+</map>

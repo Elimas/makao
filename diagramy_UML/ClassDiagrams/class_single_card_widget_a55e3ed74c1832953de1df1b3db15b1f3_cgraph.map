@@ -1,0 +1,5 @@
+<map id="SingleCardWidget::SingleCardWidget" name="SingleCardWidget::SingleCardWidget">
+<area shape="rect" id="node2" href="$class_card.html#a46d710a49f20841c2dbb852714e335aa" title="Card::getColor" alt="" coords="241,5,346,32"/>
+<area shape="rect" id="node3" href="$class_card.html#a5b481632164f2667998c19f65a92aa2d" title="Card::getPipAsText" alt="" coords="226,56,361,83"/>
+<area shape="rect" id="node4" href="$class_card.html#aede02d7f53dfa53991ab9efd5a943776" title="Card::getSuitAsText" alt="" coords="224,107,363,133"/>
+</map>

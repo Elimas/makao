@@ -1,0 +1,4 @@
+<map id="QObject" name="QObject">
+<area shape="rect" id="node2" href="$class_client.html" title="{Client\n||+ Client()\l+ ~Client()\l+ connectToHost()\l+ isConnected()\l+ sendMessage()\l+ disconnectFromHost()\l+ getSocket()\l+ getPlayer()\l+ getOtherPlayers()\l}" alt="" coords="5,145,168,340"/>
+<area shape="rect" id="node3" href="$class_player.html" title="{Player\n|+ cardsCount\l+ ready\l+ waitingTurns\l|+ Player()\l+ ~Player()\l+ getId()\l+ setId()\l+ getName()\l+ getSocket()\l+ addCard()\l+ removeCard()\l+ cardAt()\l}" alt="" coords="193,131,303,355"/>
+</map>

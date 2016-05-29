@@ -1,0 +1,6 @@
+<map id="Table::PlayAce" name="Table::PlayAce">
+<area shape="rect" id="node2" href="$class_table.html#a48c3b7fe5e5a270a68c0c3796230d57d" title="Table::PlayCard" alt="" coords="164,31,279,57"/>
+<area shape="rect" id="node3" href="$class_table.html#ac531c5fdc89b35868cbf17e4b994ee40" title="Table::CanPlayCard" alt="" coords="327,31,464,57"/>
+<area shape="rect" id="node4" href="$class_card.html#a926d19c368d80d2f807cfd5fc21205f9" title="Card::getPip" alt="" coords="514,5,609,32"/>
+<area shape="rect" id="node5" href="$class_card.html#a42bfaf13d7e459fcf43efd2fb1dea2af" title="Card::getSuit" alt="" coords="512,68,611,95"/>
+</map>

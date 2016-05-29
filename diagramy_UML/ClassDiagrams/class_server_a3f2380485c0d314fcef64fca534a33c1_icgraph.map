@@ -1,0 +1,6 @@
+<map id="Server::sendMessageToAllPlayers" name="Server::sendMessageToAllPlayers">
+<area shape="rect" id="node2" href="$class_server.html#a8afda81bd2b56f903fef92820a712677" title="Server::incomingConnection" alt="" coords="229,5,412,32"/>
+<area shape="rect" id="node3" href="$class_server.html#a0992574354bcc50cee584c3f6eb007bb" title="Server::getOtherPlayers" alt="" coords="460,31,620,57"/>
+<area shape="rect" id="node4" href="$class_game_screen_widget.html#ad8a182835097b1b27e5bdf2d01a950a4" title="GameScreenWidget::GameScreen\lWidget" alt="" coords="668,23,891,65"/>
+<area shape="rect" id="node5" href="$class_lobby_widget.html#a19290407497acc0d164d69e07f3c9115" title="LobbyWidget::startClient" alt="" coords="939,31,1104,57"/>
+</map>

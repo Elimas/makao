@@ -25,6 +25,8 @@ private:
 	Card::Pip jackRequestedPip;
     bool is4PlayedRecently;
     bool isWar;
+    bool isRequest;
+    bool isRequestFinal;
     int warCards;
 
 	bool CanPlayCardOnAce(const Card& card) const;
@@ -33,8 +35,12 @@ private:
 
 public:
     bool getIsWar() const { return isWar; }
+    bool getIsRequest() const {return isRequest;}
+    bool getIsRequestFinal() const {return isRequestFinal;}
     int getWarCardsCount() const { return warCards; }
     void resetWarFlag() { isWar = false; warCards = 0; }
+    void setJackRequestedPip(Card::Pip pip){jackRequestedPip=pip;isRequest=true;}
+    void resetRequest() {isRequest=false;isRequestFinal=false;}
 };
 
 #endif // GAME_H

@@ -1,0 +1,7 @@
+<map id="Card::getPip" name="Card::getPip">
+<area shape="rect" id="node2" href="$class_game_screen_widget.html#a1b1827c8f2febbc009211992ebf0c5fd" title="GameScreenWidget::\l~GameScreenWidget" alt="" coords="496,19,643,60"/>
+<area shape="rect" id="node3" href="$class_table.html#ac531c5fdc89b35868cbf17e4b994ee40" title="Table::CanPlayCard" alt="" coords="148,34,285,61"/>
+<area shape="rect" id="node4" href="$class_table.html#a48c3b7fe5e5a270a68c0c3796230d57d" title="Table::PlayCard" alt="" coords="333,85,448,112"/>
+<area shape="rect" id="node6" href="$class_table.html#a2834b79a4c3eb776a6a5c31afdac700c" title="Table::PlayJack" alt="" coords="512,136,627,162"/>
+<area shape="rect" id="node5" href="$class_table.html#aeaaf4bd6696359e73acf8b4dacf9a68e" title="Table::PlayAce" alt="" coords="514,85,625,112"/>
+</map>

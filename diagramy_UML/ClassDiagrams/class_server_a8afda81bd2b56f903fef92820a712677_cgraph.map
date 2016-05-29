@@ -1,0 +1,4 @@
+<map id="Server::incomingConnection" name="Server::incomingConnection">
+<area shape="rect" id="node2" href="$class_server.html#aae6e488d8f462015c8b2f2169bb9167e" title="Server::sendMessage" alt="" coords="460,5,607,32"/>
+<area shape="rect" id="node3" href="$class_server.html#a3f2380485c0d314fcef64fca534a33c1" title="Server::sendMessageToAll\lPlayers" alt="" coords="236,27,412,69"/>
+</map>

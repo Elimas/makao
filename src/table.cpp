@@ -1,8 +1,10 @@
 #include "table.h"
 #include "time.h"
 #include <qdebug.h>
+#include <QObject>
+#include <QMessageBox>
 
-Table::Table() : is4PlayedRecently(false), isWar(false), warCards(0)
+Table::Table() : is4PlayedRecently(false), isWar(false), warCards(0), isRequest(false), isRequestFinal(false)
 {
     srand(time(NULL));
     //wrzucamy na stol karte poczatkowa niefunkcyjna 5-10
@@ -51,23 +53,21 @@ bool Table::CanPlayCard(const Card& card) const
         if (card.getPip() == Card::Pip::Card4) return true;
         else return false;
     }
-	
+    if(isRequest)
+    {
+        return CanPlayCardOnJack(card);
+    }
     /* Dama na wszystko, Wszystko na dame */
     if(cardOnTop.getPip() == Card::Pip::Queen || card.getPip() == Card::Pip::Queen)
 	{
 		return true;
 	}
-
+    /* As */
 	if(cardOnTop.getPip() == Card::Pip::Ace)
 	{
 		return CanPlayCardOnAce(card);
-	}
-
-	if(cardOnTop.getPip() == Card::Pip::Jack)
-	{
-		return CanPlayCardOnJack(card);
-	}
-
+    }
+    /* Inny, legalny ruch */
 	if (cardOnTop.getSuit() == card.getSuit() || cardOnTop.getPip() == card.getPip())
 	{
 		return true;
@@ -105,6 +105,11 @@ void Table::PlayCard(const Card& card)
             else if (card.getPip() == Card::Pip::King) { warCards = 0; isWar = false; qDebug() << "Koniec wojny"; }
         }
     }
+    if(isRequest&&card.getPip()==jackRequestedPip)
+    {
+        isRequestFinal=true;
+    }
+
 }
 
 void Table::PlayAce(const Card& aceCard, Card::Suit changedToSuit)
@@ -115,7 +120,7 @@ void Table::PlayAce(const Card& aceCard, Card::Suit changedToSuit)
 
 void Table::PlayJack(const Card& jackCard, Card::Pip requestedPip)
 {
-	jackRequestedPip = requestedPip;
+    jackRequestedPip = requestedPip;
 	PlayCard(jackCard);
 }
 
@@ -127,8 +132,14 @@ bool Table::CanPlayCardOnAce(const Card& card) const
 bool Table::CanPlayCardOnJack(const Card& card) const
 {
 	//TODO: walet zada od wszystkich graczy (trzeba zebrac karty od wszystkich)
-	//TODO: mozna nie zadac niczego
-	return jackRequestedPip == card.getPip() || card.getPip() == Card::Pip::Jack;
+
+    //"Przyklepane" zadanie
+    if(isRequestFinal)
+    return jackRequestedPip == card.getPip();
+
+    //Zadamy czegos
+    else //if(jackRequestedPip!=NULL)
+    return jackRequestedPip == card.getPip() || card.getPip() == Card::Pip::Jack;
 }
 
 //ściaga kartę ze stosu kart

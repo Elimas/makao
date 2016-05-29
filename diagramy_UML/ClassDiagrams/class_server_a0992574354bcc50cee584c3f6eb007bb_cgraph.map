@@ -1,0 +1,6 @@
+<map id="Server::getOtherPlayers" name="Server::getOtherPlayers">
+<area shape="rect" id="node2" href="$class_server.html#a8afda81bd2b56f903fef92820a712677" title="Server::incomingConnection" alt="" coords="213,71,396,98"/>
+<area shape="rect" id="node3" href="$class_server.html#a3f2380485c0d314fcef64fca534a33c1" title="Server::sendMessageToAll\lPlayers" alt="" coords="444,5,620,47"/>
+<area shape="rect" id="node4" href="$class_server.html#aae6e488d8f462015c8b2f2169bb9167e" title="Server::sendMessage" alt="" coords="668,71,815,98"/>
+<area shape="rect" id="node5" href="$class_server.html#a28be9df75b3a622f95297ebf812f83f8" title="Server::shutdown" alt="" coords="244,173,365,199"/>
+</map>

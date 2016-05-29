@@ -1,0 +1,5 @@
+<map id="CardsWidget::calculateCardHorizontalPosition" name="CardsWidget::calculateCardHorizontalPosition">
+<area shape="rect" id="node2" href="$class_cards_widget.html#a8a1bcb522816f503f4f85ca595e52862" title="CardsWidget::addCard" alt="" coords="257,5,411,32"/>
+<area shape="rect" id="node3" href="$class_cards_widget.html#a8d2d83b205b8d525272cfbe17d832a9a" title="CardsWidget::rearrangeCards" alt="" coords="237,56,431,83"/>
+<area shape="rect" id="node4" href="$class_cards_widget.html#a69ac2ecf80597579ca209cdbe4515b8b" title="CardsWidget::removeCard" alt="" coords="479,56,652,83"/>
+</map>

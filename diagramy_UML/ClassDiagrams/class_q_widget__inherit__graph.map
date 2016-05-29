@@ -1,0 +1,8 @@
+<map id="QWidget" name="QWidget">
+<area shape="rect" id="node2" href="$class_cards_widget.html" title="{CardsWidget\n||+ CardsWidget()\l+ ~CardsWidget()\l+ addCard()\l+ removeCard()\l+ rearrangeCards()\l+ calculateCardHorizontalPosition()\l}" alt="" coords="5,131,232,281"/>
+<area shape="rect" id="node3" href="$class_form.html" title="{Form\n||+ Form()\l+ ~Form()\l}" alt="" coords="256,160,336,252"/>
+<area shape="rect" id="node4" href="$class_game_screen_widget.html" title="{GameScreenWidget\n||+ GameScreenWidget()\l+ ~GameScreenWidget()\l}" alt="" coords="361,160,527,252"/>
+<area shape="rect" id="node5" href="$class_lobby_widget.html" title="{LobbyWidget\n||+ ~LobbyWidget()\l+ startServer()\l+ startClient()\l+ createServerLobby()\l+ createClientLobby()\l}" alt="" coords="552,138,701,274"/>
+<area shape="rect" id="node6" href="$class_opponent_cards_widget.html" title="{OpponentCardsWidget\n||+ OpponentCardsWidget()\l+ ~OpponentCardsWidget()\l+ setCardsNumber()\l+ setOrientation()\l}" alt="" coords="725,145,907,267"/>
+<area shape="rect" id="node7" href="$class_single_card_widget.html" title="{SingleCardWidget\n||+ SingleCardWidget()\l+ ~SingleCardWidget()\l+ getCard()\l}" alt="" coords="931,153,1085,259"/>
+</map>

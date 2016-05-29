@@ -1,0 +1,6 @@
+<map id="Table::PlayJack" name="Table::PlayJack">
+<area shape="rect" id="node2" href="$class_card.html#a926d19c368d80d2f807cfd5fc21205f9" title="Card::getPip" alt="" coords="518,5,613,32"/>
+<area shape="rect" id="node3" href="$class_card.html#a42bfaf13d7e459fcf43efd2fb1dea2af" title="Card::getSuit" alt="" coords="516,107,615,133"/>
+<area shape="rect" id="node4" href="$class_table.html#a48c3b7fe5e5a270a68c0c3796230d57d" title="Table::PlayCard" alt="" coords="168,56,283,83"/>
+<area shape="rect" id="node5" href="$class_table.html#ac531c5fdc89b35868cbf17e4b994ee40" title="Table::CanPlayCard" alt="" coords="331,56,468,83"/>
+</map>

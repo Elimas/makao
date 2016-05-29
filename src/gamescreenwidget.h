@@ -24,6 +24,7 @@ private:
     int currentPlayerId;
     int waitTurns;
     int rankingPosition;
+    int requestTurns;
 
 public:
     explicit GameScreenWidget(QWidget *parent, Server *server, Client *client, bool isServer);

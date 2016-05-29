@@ -1,0 +1,5 @@
+<map id="Player::getName" name="Player::getName">
+<area shape="rect" id="node2" href="$class_game_screen_widget.html#ad8a182835097b1b27e5bdf2d01a950a4" title="GameScreenWidget::GameScreen\lWidget" alt="" coords="172,5,395,47"/>
+<area shape="rect" id="node3" href="$class_lobby_widget.html#a19290407497acc0d164d69e07f3c9115" title="LobbyWidget::startClient" alt="" coords="443,42,608,69"/>
+<area shape="rect" id="node4" href="$class_game_screen_widget.html#a1b1827c8f2febbc009211992ebf0c5fd" title="GameScreenWidget::\l~GameScreenWidget" alt="" coords="210,123,357,164"/>
+</map>

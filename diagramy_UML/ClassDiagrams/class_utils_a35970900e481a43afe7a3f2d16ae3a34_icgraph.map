@@ -1,0 +1,5 @@
+<map id="Utils::showNotBlockingMessageBox" name="Utils::showNotBlockingMessageBox">
+<area shape="rect" id="node2" href="$class_game_screen_widget.html#a1b1827c8f2febbc009211992ebf0c5fd" title="GameScreenWidget::\l~GameScreenWidget" alt="" coords="296,5,443,47"/>
+<area shape="rect" id="node3" href="$class_lobby_widget.html#a35e6f192fbadecd4632e1583821bd278" title="LobbyWidget::startServer" alt="" coords="285,71,453,98"/>
+<area shape="rect" id="node4" href="$class_lobby_widget.html#a19290407497acc0d164d69e07f3c9115" title="LobbyWidget::startClient" alt="" coords="287,122,452,149"/>
+</map>

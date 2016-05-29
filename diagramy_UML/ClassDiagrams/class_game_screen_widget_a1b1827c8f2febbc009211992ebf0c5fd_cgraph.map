@@ -1,0 +1,28 @@
+<map id="GameScreenWidget::~GameScreenWidget" name="GameScreenWidget::~GameScreenWidget">
+<area shape="rect" id="node2" href="$class_player.html#a107ee3ad17a7ec87030db97e903da736" title="Player::addCard" alt="" coords="259,5,373,32"/>
+<area shape="rect" id="node3" href="$class_table.html#ac531c5fdc89b35868cbf17e4b994ee40" title="Table::CanPlayCard" alt="" coords="480,107,617,133"/>
+<area shape="rect" id="node4" href="$class_card.html#a926d19c368d80d2f807cfd5fc21205f9" title="Card::getPip" alt="" coords="667,107,762,133"/>
+<area shape="rect" id="node5" href="$class_card.html#a42bfaf13d7e459fcf43efd2fb1dea2af" title="Card::getSuit" alt="" coords="665,208,764,235"/>
+<area shape="rect" id="node6" href="$class_player.html#a442f82c02d5cd68767aa1a7b28fc622d" title="Player::cardAt" alt="" coords="263,296,369,323"/>
+<area shape="rect" id="node7" href="$class_card.html#a2b59f800c67c63f7124c9413656cb486" title="Card::deserialize" alt="" coords="489,347,608,373"/>
+<area shape="rect" id="node9" href="$class_player.html#afc6b4cc3a34e9b01f9f8659f5d9f62ec" title="Player::getId" alt="" coords="269,448,363,475"/>
+<area shape="rect" id="node10" href="$class_table.html#a53c45cd931e116389db9384815fa8a65" title="Table::getIsWar" alt="" coords="259,499,373,525"/>
+<area shape="rect" id="node11" href="$class_player.html#a3ecb2fd74c6dd0642728a78773115129" title="Player::getName" alt="" coords="257,549,375,576"/>
+<area shape="rect" id="node12" href="$class_table.html#a39a39d8da1fd1765c6097bfab6eed586" title="Table::getNewCard" alt="" coords="251,600,381,627"/>
+<area shape="rect" id="node13" href="$class_card.html#a5b481632164f2667998c19f65a92aa2d" title="Card::getPipAsText" alt="" coords="249,651,383,677"/>
+<area shape="rect" id="node14" href="$class_card.html#aede02d7f53dfa53991ab9efd5a943776" title="Card::getSuitAsText" alt="" coords="247,701,385,728"/>
+<area shape="rect" id="node15" href="$class_table.html#ac7fe3f552492a3c5dbfc6a6a19ff1b87" title="Table::getWarCardsCount" alt="" coords="231,752,401,779"/>
+<area shape="rect" id="node16" href="$class_table.html#a48c3b7fe5e5a270a68c0c3796230d57d" title="Table::PlayCard" alt="" coords="259,169,373,196"/>
+<area shape="rect" id="node17" href="$class_player.html#ac5c7353cd22f65c6ecd9fdb17c61644e" title="Player::removeCard" alt="" coords="249,803,383,829"/>
+<area shape="rect" id="node18" href="$class_table.html#a6a1f87bc5745c3d22e979adfa3f078a4" title="Table::reset4Flag" alt="" coords="255,853,377,880"/>
+<area shape="rect" id="node19" href="$class_table.html#a6c3b2fad30ac647dcdc58d80fe92798b" title="Table::resetWarFlag" alt="" coords="247,904,385,931"/>
+<area shape="rect" id="node20" href="$class_card.html#a70dcf7f6ca004e349ca7d2f5a0f7e4c6" title="Card::serialize" alt="" coords="263,397,369,424"/>
+<area shape="rect" id="node23" href="$class_opponent_cards_widget.html#aafe3ae8a88544531e7482cf94fa301f0" title="OpponentCardsWidget\l::setCardsNumber" alt="" coords="239,955,393,997"/>
+<area shape="rect" id="node24" href="$class_table.html#a035ba9088afbfd2db082a8d7003e37d5" title="Table::setJackRequestedPip" alt="" coords="223,1021,409,1048"/>
+<area shape="rect" id="node25" href="$class_utils.html#af9451bc39adadd3378f341666cdddb39" title="Utils::showJackSelection\lMessageBox" alt="" coords="233,1073,399,1114"/>
+<area shape="rect" id="node26" href="$class_utils.html#a35970900e481a43afe7a3f2d16ae3a34" title="Utils::showNotBlockingMessageBox" alt="" coords="200,1139,432,1165"/>
+<area shape="rect" id="node27" href="$class_table.html#a3717bcf9fd51c262d91836877df76d88" title="Table::topCard" alt="" coords="263,1189,369,1216"/>
+<area shape="rect" id="node8" href="$class_card.html#a94c0b09bb0539feac2ded9f8793c9a90" title="Card::Card" alt="" coords="673,347,757,373"/>
+<area shape="rect" id="node21" href="$class_card.html#af10c6814fe356cf721336a8ac164ea0a" title="Card::getPipAsInt" alt="" coords="487,397,611,424"/>
+<area shape="rect" id="node22" href="$class_card.html#abbfaead4b17e2a6964e2d5836c6c43db" title="Card::getSuitAsInt" alt="" coords="485,448,613,475"/>
+</map>

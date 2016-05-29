@@ -9,7 +9,7 @@
 #include "custombuttonsdialog.h"
 
 GameScreenWidget::GameScreenWidget(QWidget *parent, Server *server, Client *client, bool isServer) :
-    QWidget(parent), server(server), client(client), isServer(isServer), currentPlayerId(0), currentPlayerIndex(0), waitTurns(0), rankingPosition(1),
+    QWidget(parent), server(server), client(client), isServer(isServer), currentPlayerId(0), currentPlayerIndex(0), waitTurns(0), rankingPosition(1),requestTurns(0),
     ui(new Ui::GameScreenWidget)
 {
 	ui->setupUi(this);
@@ -282,6 +282,78 @@ void GameScreenWidget::onServerDataReceived(Player* sender, int messageType, QSt
 		server->sendMessageToAllPlayers(MessageType::AceChangedSuit, message);
 		Utils::showNotBlockingMessageBox(nullptr, "Zagrano asem", "Zmieniono kolor na: " + message, QMessageBox::Icon::Information);
 	}
+    else if(messageType==MessageType::RequestedCard)
+    {
+        if (currentPlayerId == sender->getId())
+        {
+            QStringList a = message.split(";");
+            int index = a.value(0).toInt();
+            Card& card = sender->cardAt(index);
+            if (table.CanPlayCard(card))
+            {
+                int b=a.value(1).toInt();
+                switch(b)
+                {
+                case 5:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card5);
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    break;
+                }
+                case 6:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card6);
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    break;
+                }
+                case 7:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card7);
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    break;
+                }
+                case 8:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card8);
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    break;
+                }
+                case 9:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card9);
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    break;
+                }
+                case 10:
+                {
+                    table.setJackRequestedPip(Card::Pip::Card10);
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    break;
+                }
+                case 0:
+                {
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+                }
+                log(QString("Gracz %1 gra kartą %2 %3").arg(sender->getName()).arg(card.getSuitAsText()).arg(card.getPipAsText()));
+                table.PlayCard(card);
+                sender->removeCard(index);
+                setTableCard(table.topCard());
+                server->sendMessageToAllPlayers(MessageType::SetTableCard, table.topCard().serialize());
+                server->sendMessage(sender, MessageType::RemoveCard, QString::number(index));
+                server->sendMessageToAllPlayers(MessageType::CardsNumber, QString("%1;%2").arg(sender->getId()).arg(sender->cardsCount));
+                nextPlayerTurn();
+            }
+            else
+            {
+                server->sendMessage(sender, MessageType::CantPlayCard, QString::number(index));
+            }
+        }
+    }
 }
 //slots in client
 void GameScreenWidget::onClientDisconnected()
@@ -610,6 +682,11 @@ void GameScreenWidget::nextPlayerTurn()
             ui->CurrentPlayer->setEnabled(false);
             nextPlayerTurn();
         }
+    if(requestTurns>0)
+    {
+        if(--requestTurns==0)
+            table.resetRequest();
+    }
         if (currentPlayer->waitingTurns > 0)
         {
             log(QString("Gracz %1 czeka teraz %2 turę").arg(currentPlayer->getName()).arg(currentPlayer->waitingTurns));
@@ -717,6 +794,58 @@ void GameScreenWidget::cardClicked(const Card &card, int cardIndex)
                 waitTurns++;
                 refreshCardButton();
             }
+            if(card.getPip()==Card::Pip::Jack)
+            {
+                int a=Utils::showJackSelectionMessageBox(NULL, QString("Zagrałeś waleta"), QString("Wybierz żądanie:"), QMessageBox::Icon::Information);
+                switch(a)
+                {
+                case 5:
+                {
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    table.setJackRequestedPip(Card::Pip::Card5);
+                    break;
+                }
+                case 6:
+                {
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    table.setJackRequestedPip(Card::Pip::Card6);
+                    break;
+                }
+                case 7:
+                {
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    table.setJackRequestedPip(Card::Pip::Card7);
+                    break;
+                }
+                case 8:
+                {
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    table.setJackRequestedPip(Card::Pip::Card8);
+                    break;
+                }
+                case 9:
+                {
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    table.setJackRequestedPip(Card::Pip::Card9);
+                    break;
+                }
+                case 10:
+                {
+                    requestTurns = server->getOtherPlayers().size()+2;
+                    table.setJackRequestedPip(Card::Pip::Card10);
+                    break;
+                }
+                case 0:
+                {
+                    //table.setJackRequestedPip(Null);
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+                }
+            }
             server->getHostPlayer()->removeCard(cardIndex);
             ui->CurrentPlayer->removeCard(cardIndex);
             table.PlayCard(card);
@@ -775,7 +904,16 @@ void GameScreenWidget::cardClicked(const Card &card, int cardIndex)
     else
     {
         ui->CurrentPlayer->setEnabled(false);
-        client->sendMessage(MessageType::PlayCard, QString::number(cardIndex));
+        if(card.getPip()==Card::Pip::Jack)
+        {
+        int a=Utils::showJackSelectionMessageBox(NULL, QString("Zagrałeś waleta"), QString("Wybierz żądanie:"), QMessageBox::Icon::Information);
+        qDebug()<<"wysłana wartosc a: "<<a;
+        client->sendMessage(MessageType::RequestedCard, QString::number(cardIndex)+";"+QString::number(a));
+        }
+        else
+        {
+            client->sendMessage(MessageType::PlayCard, QString::number(cardIndex));
+        }
     }
 }
 

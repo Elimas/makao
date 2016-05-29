@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['gamescreenwidget',['GameScreenWidget',['../class_game_screen_widget.html#ad8a182835097b1b27e5bdf2d01a950a4',1,'GameScreenWidget']]],
+  ['getcard',['getCard',['../class_single_card_widget.html#afff91ec0fae5e09ea5573560fa8e2b7e',1,'SingleCardWidget']]],
+  ['getcolor',['getColor',['../class_card.html#a46d710a49f20841c2dbb852714e335aa',1,'Card']]],
+  ['gethostplayer',['getHostPlayer',['../class_server.html#aebd35398f3b5b7346c17588007680d68',1,'Server']]],
+  ['getid',['getId',['../class_player.html#afc6b4cc3a34e9b01f9f8659f5d9f62ec',1,'Player']]],
+  ['getisrequest',['getIsRequest',['../class_table.html#a948fa41e8e89b72fed8486c7b28336b2',1,'Table']]],
+  ['getisrequestfinal',['getIsRequestFinal',['../class_table.html#afad8a9fcb93b5f75fef5be7f8104f46a',1,'Table']]],
+  ['getiswar',['getIsWar',['../class_table.html#a53c45cd931e116389db9384815fa8a65',1,'Table']]],
+  ['getname',['getName',['../class_player.html#a3ecb2fd74c6dd0642728a78773115129',1,'Player']]],
+  ['getnewcard',['getNewCard',['../class_table.html#a39a39d8da1fd1765c6097bfab6eed586',1,'Table']]],
+  ['getotherplayers',['getOtherPlayers',['../class_client.html#a86d8ddaa45f15810a94678c10cfaf87e',1,'Client::getOtherPlayers()'],['../class_server.html#a0992574354bcc50cee584c3f6eb007bb',1,'Server::getOtherPlayers()']]],
+  ['getpip',['getPip',['../class_card.html#a926d19c368d80d2f807cfd5fc21205f9',1,'Card']]],
+  ['getpipasint',['getPipAsInt',['../class_card.html#af10c6814fe356cf721336a8ac164ea0a',1,'Card']]],
+  ['getpipastext',['getPipAsText',['../class_card.html#a5b481632164f2667998c19f65a92aa2d',1,'Card']]],
+  ['getplayer',['getPlayer',['../class_client.html#a6ca3b7c26d5165046759de16573c5e6d',1,'Client']]],
+  ['getsocket',['getSocket',['../class_client.html#a37b517226bb950c8ab8390ee1e06e7a7',1,'Client::getSocket()'],['../class_player.html#a8d82cf101507ecaabd203cca50a7204c',1,'Player::getSocket()']]],
+  ['getsuit',['getSuit',['../class_card.html#a42bfaf13d7e459fcf43efd2fb1dea2af',1,'Card']]],
+  ['getsuitasint',['getSuitAsInt',['../class_card.html#abbfaead4b17e2a6964e2d5836c6c43db',1,'Card']]],
+  ['getsuitastext',['getSuitAsText',['../class_card.html#aede02d7f53dfa53991ab9efd5a943776',1,'Card']]],
+  ['getwarcardscount',['getWarCardsCount',['../class_table.html#ac7fe3f552492a3c5dbfc6a6a19ff1b87',1,'Table']]]
+];

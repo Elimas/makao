@@ -1,0 +1,7 @@
+<map id="Server::onDataReceived" name="Server::onDataReceived">
+<area shape="rect" id="node2" href="$class_server.html#a3f2380485c0d314fcef64fca534a33c1" title="Server::sendMessageToAll\lPlayers" alt="" coords="212,41,388,82"/>
+<area shape="rect" id="node4" href="$class_server.html#a0992574354bcc50cee584c3f6eb007bb" title="Server::getOtherPlayers" alt="" coords="667,56,827,83"/>
+<area shape="rect" id="node3" href="$class_server.html#a8afda81bd2b56f903fef92820a712677" title="Server::incomingConnection" alt="" coords="436,5,619,32"/>
+<area shape="rect" id="node5" href="$class_game_screen_widget.html#ad8a182835097b1b27e5bdf2d01a950a4" title="GameScreenWidget::GameScreen\lWidget" alt="" coords="875,49,1097,90"/>
+<area shape="rect" id="node6" href="$class_lobby_widget.html#a19290407497acc0d164d69e07f3c9115" title="LobbyWidget::startClient" alt="" coords="1145,56,1311,83"/>
+</map>

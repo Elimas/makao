@@ -1,0 +1,5 @@
+<map id="Table::PlayCard" name="Table::PlayCard">
+<area shape="rect" id="node2" href="$class_table.html#ac531c5fdc89b35868cbf17e4b994ee40" title="Table::CanPlayCard" alt="" coords="168,31,305,57"/>
+<area shape="rect" id="node3" href="$class_card.html#a926d19c368d80d2f807cfd5fc21205f9" title="Card::getPip" alt="" coords="355,5,450,32"/>
+<area shape="rect" id="node4" href="$class_card.html#a42bfaf13d7e459fcf43efd2fb1dea2af" title="Card::getSuit" alt="" coords="353,68,452,95"/>
+</map>

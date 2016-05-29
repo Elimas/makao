@@ -1,0 +1,6 @@
+<map id="Card::serialize" name="Card::serialize">
+<area shape="rect" id="node2" href="$class_card.html#a2b59f800c67c63f7124c9413656cb486" title="Card::deserialize" alt="" coords="163,5,282,32"/>
+<area shape="rect" id="node4" href="$class_card.html#af10c6814fe356cf721336a8ac164ea0a" title="Card::getPipAsInt" alt="" coords="161,56,285,83"/>
+<area shape="rect" id="node5" href="$class_card.html#abbfaead4b17e2a6964e2d5836c6c43db" title="Card::getSuitAsInt" alt="" coords="159,107,287,133"/>
+<area shape="rect" id="node3" href="$class_card.html#a94c0b09bb0539feac2ded9f8793c9a90" title="Card::Card" alt="" coords="335,5,419,32"/>
+</map>
