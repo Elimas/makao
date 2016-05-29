@@ -132,32 +132,6 @@ QLabel
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>260</y>
-      <width>181</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>[TEST]Client</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>180</y>
-      <width>181</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>[TEST]Server</string>
-    </property>
-   </widget>
    <widget class="QFrame" name="frameJoin">
     <property name="geometry">
      <rect>

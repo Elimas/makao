@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QtGlobal>
+#include "time.h"
 
 
 
@@ -9,8 +11,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui(new Ui::MainWindow)
 {
+    qsrand(time(NULL));
     ui->setupUi(this);
     ui->frameJoin->setVisible(false);
+    ui->txtNick->setValidator(new QRegExpValidator(QRegExp("[a-zA-Z0-9]+"), this));
+    ui->txtIP->setValidator(new QRegExpValidator(QRegExp("[0-9.]+"), this));
+    ui->txtNick->setText(QString("player%1").arg(qrand() % 1000));
+    ui->txtIP->setText("127.0.0.1");
 }
 
 MainWindow::~MainWindow()
