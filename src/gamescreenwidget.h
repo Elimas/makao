@@ -55,6 +55,8 @@ private:
     void setTableCard(Card& card);
     void refreshCardButton();
     void refreshRanking();
+    void handleAce();
+	void handleAceSuitChangedOnServer(const QString& suitName);
 };
 
 #endif // GAMESCREENWIDGET_H

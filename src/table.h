@@ -14,11 +14,14 @@ public:
     Card getNewCard();
     Card topCard();
     void reset4Flag();
+	void setAceChangedSuit(Card::Suit suit);
 
 private:
     std::deque<Card> cardsStack;
 	std::stack<Card> tableCards;
 	Card::Suit aceChangedSuit;
+
+private:
 	Card::Pip jackRequestedPip;
     bool is4PlayedRecently;
     bool isWar;

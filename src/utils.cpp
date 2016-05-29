@@ -5,7 +5,7 @@ Utils::Utils()
 
 }
 
-void Utils::showNotBlockingMessageBox(QWidget* parent, QString &title, QString &message, QMessageBox::Icon icon)
+void Utils::showNotBlockingMessageBox(QWidget* parent, const QString &title, const QString &message, QMessageBox::Icon icon)
 {
     QMessageBox* msgBox = new QMessageBox(parent);
     msgBox->setAttribute( Qt::WA_DeleteOnClose );
